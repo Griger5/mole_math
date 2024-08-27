@@ -1,5 +1,5 @@
-#include "seq_matrix_operations.h"
-#include "seq_matrix_utils.h"
+#include "../../include/mole_math/seq_matrix_operations.h"
+#include "../../include/mole_math/seq_matrix_utils.h"
 
 Matrix seq_matrix_multiply(const Matrix matrix_a, const Matrix matrix_b) {
     size_t rows_a = matrix_a.rows;

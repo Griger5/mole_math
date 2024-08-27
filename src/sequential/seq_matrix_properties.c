@@ -1,8 +1,8 @@
 #include <math.h>
 
-#include "seq_matrix_properties.h"
-#include "seq_matrix_transform.h"
-#include "seq_matrix_utils.h"
+#include "../../include/mole_math/seq_matrix_properties.h"
+#include "../../include/mole_math/seq_matrix_transform.h"
+#include "../../include/mole_math/seq_matrix_utils.h"
 
 double seq_matrix_determinant(Matrix matrix) {   
     if (matrix.rows != matrix.cols) return NAN;

@@ -1,7 +1,7 @@
 #ifndef SEQ_MATRIX_UTILS_H
 #define SEQ_MATRIX_UTILS_H
 
-#include "../main/matrix/matrix_define.h"
+#include <mole_math/matrix_define.h>
 
 void matrix_print(const Matrix matrix);
 

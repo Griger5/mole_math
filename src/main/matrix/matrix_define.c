@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-#include "matrix_define.h"
+#include "../../../include/mole_math/matrix_define.h"
 
 Matrix matrix_init(size_t rows, size_t cols) {
     Matrix matrix;

@@ -1,7 +1,7 @@
 #ifndef SEQ_MATRIX_TRANSFORM_H
 #define SEQ_MATRIX_TRANSFORM_H
 
-#include "../main/matrix/matrix_define.h"
+#include <mole_math/matrix_define.h>
 
 void seq_matrix_switch_rows(Matrix *matrix, size_t row_1, size_t row_2);
 

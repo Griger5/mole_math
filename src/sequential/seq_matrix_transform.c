@@ -1,7 +1,7 @@
-#include "seq_matrix_transform.h"
-#include "seq_matrix_properties.h"
-#include "seq_matrix_scalars.h"
-#include "seq_matrix_utils.h"
+#include "../../include/mole_math/seq_matrix_transform.h"
+#include "../../include/mole_math/seq_matrix_properties.h"
+#include "../../include/mole_math/seq_matrix_scalars.h"
+#include "../../include/mole_math/seq_matrix_utils.h"
 
 void seq_matrix_subtract_rows(Matrix *matrix, size_t row_minuend, size_t row_subtrahend, double multiplier) {
     if (row_minuend < matrix->rows && row_subtrahend < matrix->rows && row_minuend != row_subtrahend) {

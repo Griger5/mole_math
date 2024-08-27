@@ -1,4 +1,4 @@
-#include "seq_matrix_scalars.h"
+#include "../../include/mole_math/seq_matrix_scalars.h"
 
 void seq_matrix_subtract_scalar(Matrix *matrix, double scalar) {
     size_t rows = matrix->rows;

@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "seq_matrix_utils.h"
+#include "../../include/mole_math/seq_matrix_utils.h"
 
 void matrix_print(const Matrix matrix) {
     size_t rows = matrix.rows;

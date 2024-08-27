@@ -1,7 +1,7 @@
 #ifndef SEQ_MATRIX_OPERATIONS_H
 #define SEQ_MATRIX_OPERATIONS_H
 
-#include "../main/matrix/matrix_define.h"
+#include <mole_math/matrix_define.h>
 
 Matrix seq_matrix_multiply(const Matrix matrix_a, const Matrix matrix_b);
 
