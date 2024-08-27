@@ -3,7 +3,7 @@
 
 #include <mole_math/matrix_define.h>
 
-void matrix_print(const Matrix matrix);
+void seq_matrix_print(const Matrix matrix);
 
 Matrix seq_matrix_identity(size_t N);
 

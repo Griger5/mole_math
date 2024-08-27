@@ -2,7 +2,7 @@
 
 #include "../../include/mole_math/seq_matrix_utils.h"
 
-void matrix_print(const Matrix matrix) {
+void seq_matrix_print(const Matrix matrix) {
     size_t rows = matrix.rows;
     size_t cols = matrix.cols;
 
