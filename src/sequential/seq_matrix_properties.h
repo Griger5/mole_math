@@ -3,6 +3,6 @@
 
 #include "../main/matrix/matrix_define.h"
 
-double matrix_determinant(Matrix matrix);
+double seq_matrix_determinant(Matrix matrix);
 
 #endif

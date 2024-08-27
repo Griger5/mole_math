@@ -1,6 +1,6 @@
 #include "seq_matrix_scalars.h"
 
-void matrix_subtract_scalar(Matrix *matrix, double scalar) {
+void seq_matrix_subtract_scalar(Matrix *matrix, double scalar) {
     size_t rows = matrix->rows;
     size_t cols = matrix->cols;
 
@@ -11,7 +11,7 @@ void matrix_subtract_scalar(Matrix *matrix, double scalar) {
     }
 }
 
-void matrix_multiply_row_scalar(Matrix *matrix, size_t row_num, double scalar) {
+void seq_matrix_multiply_row_scalar(Matrix *matrix, size_t row_num, double scalar) {
     size_t cols = matrix->cols;
     
     if (row_num < matrix->rows) {

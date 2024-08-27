@@ -1,7 +1,7 @@
 #include "seq_matrix_operations.h"
 #include "seq_matrix_utils.h"
 
-Matrix matrix_multiply(const Matrix matrix_a, const Matrix matrix_b) {
+Matrix seq_matrix_multiply(const Matrix matrix_a, const Matrix matrix_b) {
     size_t rows_a = matrix_a.rows;
     size_t cols_a = matrix_a.cols;
     size_t cols_b = matrix_b.cols;
@@ -9,7 +9,7 @@ Matrix matrix_multiply(const Matrix matrix_a, const Matrix matrix_b) {
     Matrix result;
     
     if (matrix_a.cols != matrix_b.rows) {
-        result = matrix_nulled(rows_a, cols_b);
+        result = seq_matrix_nulled(rows_a, cols_b);
 
         return result;
     }
@@ -29,14 +29,14 @@ Matrix matrix_multiply(const Matrix matrix_a, const Matrix matrix_b) {
     return result;
 }
 
-Matrix matrix_subtract_elements(const Matrix matrix_a, const Matrix matrix_b) {
+Matrix seq_matrix_subtract_elements(const Matrix matrix_a, const Matrix matrix_b) {
     size_t rows = matrix_a.rows;
     size_t cols = matrix_a.cols;
 
     Matrix result;
     
     if (matrix_a.rows != matrix_b.rows || matrix_a.cols != matrix_b.cols) {
-        result = matrix_nulled(rows, cols);
+        result = seq_matrix_nulled(rows, cols);
 
         return result;
     }
@@ -54,14 +54,14 @@ Matrix matrix_subtract_elements(const Matrix matrix_a, const Matrix matrix_b) {
     return result;
 }
 
-Matrix matrix_multiply_elements(const Matrix matrix_a, const Matrix matrix_b) {
+Matrix seq_matrix_multiply_elements(const Matrix matrix_a, const Matrix matrix_b) {
     size_t rows = matrix_a.rows;
     size_t cols = matrix_a.cols;
 
     Matrix result;
 
     if (matrix_a.rows != matrix_b.rows || matrix_a.cols != matrix_b.cols) {
-        result = matrix_nulled(rows, cols);
+        result = seq_matrix_nulled(rows, cols);
 
         return result;
     }

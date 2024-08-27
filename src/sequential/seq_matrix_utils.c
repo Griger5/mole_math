@@ -14,7 +14,7 @@ void matrix_print(const Matrix matrix) {
     }
 }
 
-Matrix matrix_identity(size_t N) {
+Matrix seq_matrix_identity(size_t N) {
     Matrix identity = matrix_init(N, N);
 
     for (size_t i = 0; i < N; i++) {
@@ -24,7 +24,7 @@ Matrix matrix_identity(size_t N) {
     return identity;
 }
 
-Matrix matrix_nulled(size_t rows, size_t cols) {
+Matrix seq_matrix_nulled(size_t rows, size_t cols) {
     Matrix matrix;
     
     matrix.rows = rows;
@@ -35,7 +35,7 @@ Matrix matrix_nulled(size_t rows, size_t cols) {
     return matrix;
 }
 
-Matrix matrix_copy(const Matrix matrix_to_copy) {
+Matrix seq_matrix_copy(const Matrix matrix_to_copy) {
     size_t rows = matrix_to_copy.rows;
     size_t cols = matrix_to_copy.cols;
 
@@ -52,7 +52,7 @@ Matrix matrix_copy(const Matrix matrix_to_copy) {
     return copy;
 }
 
-Matrix matrix_array_to_matrix(double *array, size_t length) {
+Matrix seq_matrix_array_to_matrix(double *array, size_t length) {
     Matrix matrix = matrix_init(1, length);
 
     if (matrix.values != NULL) {

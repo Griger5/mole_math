@@ -4,7 +4,7 @@
 #include "seq_matrix_transform.h"
 #include "seq_matrix_utils.h"
 
-double matrix_determinant(Matrix matrix) {   
+double seq_matrix_determinant(Matrix matrix) {   
     if (matrix.rows != matrix.cols) return NAN;
 
     size_t N = matrix.rows;
@@ -26,7 +26,7 @@ double matrix_determinant(Matrix matrix) {
         return aei + bfg + cdh - ceg - bdi - afh;
     }
 
-    Matrix matrix_copied = matrix_copy(matrix);
+    Matrix matrix_copied = seq_matrix_copy(matrix);
 
     double ratio;
     double determinant = 1;
@@ -34,7 +34,7 @@ double matrix_determinant(Matrix matrix) {
     if (matrix_copied.values[0][0] == 0) {
         for (size_t i = 1; i < N; i++) {
             if (matrix_copied.values[i][i] != 0) {
-                matrix_switch_rows(&matrix_copied, 0, i);
+                seq_matrix_switch_rows(&matrix_copied, 0, i);
                 determinant *= -1;
                 break;
             }       
@@ -46,7 +46,7 @@ double matrix_determinant(Matrix matrix) {
 
         for (size_t j = i+1; j < N; j++) {
             ratio = matrix_copied.values[j][i] / matrix_copied.values[i][i];
-            matrix_subtract_rows(&matrix_copied, j, i, ratio);
+            seq_matrix_subtract_rows(&matrix_copied, j, i, ratio);
         }
         
         determinant *= matrix_copied.values[i][i];
