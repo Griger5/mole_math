@@ -25,7 +25,9 @@ Matrix seq_matrix_copy(const Matrix matrix_to_copy) {
     size_t rows = matrix_to_copy.rows;
     size_t cols = matrix_to_copy.cols;
 
-    Matrix copy = matrix_init(rows, cols);
+    Matrix copy;
+    if (matrix_to_copy.values == NULL) copy = seq_matrix_nulled(rows, cols);
+    else copy = matrix_init(rows, cols);
     
     if (copy.values != NULL) {
         if (matrix_to_copy.values == NULL) copy.values = NULL;
@@ -41,11 +43,10 @@ Matrix seq_matrix_copy(const Matrix matrix_to_copy) {
     return copy;
 }
 
-void seq_matrix_replace(Matrix *to_replace, const Matrix matrix_to_copy) {
-    if (to_replace->values != NULL) {
-        matrix_free(to_replace);
-    }
-    *to_replace = seq_matrix_copy(matrix_to_copy);
+void seq_matrix_replace(Matrix *to_replace, const Matrix to_copy) {
+    matrix_free(to_replace);
+
+    *to_replace = seq_matrix_copy(to_copy);
 }
 
 Matrix seq_matrix_array_to_matrix(double *array, size_t length) {
