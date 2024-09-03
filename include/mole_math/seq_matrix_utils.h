@@ -3,8 +3,6 @@
 
 #include <mole_math/matrix_define.h>
 
-void seq_matrix_print(const Matrix matrix);
-
 Matrix seq_matrix_identity(size_t N);
 
 Matrix seq_matrix_nulled(size_t rows, size_t cols);

@@ -1,18 +1,4 @@
-#include <stdio.h>
-
 #include "../../include/mole_math/seq_matrix_utils.h"
-
-void seq_matrix_print(const Matrix matrix) {
-    size_t rows = matrix.rows;
-    size_t cols = matrix.cols;
-
-    for (size_t i = 0; i < rows; i++) {
-        for (size_t j = 0; j < cols; j++) {
-            printf("%f ", matrix.values[i][j]);
-        }
-        printf("\n");
-    }
-}
 
 Matrix seq_matrix_identity(size_t N) {
     Matrix identity = matrix_init(N, N);
