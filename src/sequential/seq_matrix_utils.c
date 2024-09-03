@@ -28,9 +28,12 @@ Matrix seq_matrix_copy(const Matrix matrix_to_copy) {
     Matrix copy = matrix_init(rows, cols);
     
     if (copy.values != NULL) {
-        for (size_t i = 0; i < rows; i++) {
-            for (size_t j = 0; j < cols; j++) {
-                copy.values[i][j] = matrix_to_copy.values[i][j];
+        if (matrix_to_copy.values == NULL) copy.values = NULL;
+        else {
+            for (size_t i = 0; i < rows; i++) {
+                for (size_t j = 0; j < cols; j++) {
+                    copy.values[i][j] = matrix_to_copy.values[i][j];
+                }
             }
         }
     }
