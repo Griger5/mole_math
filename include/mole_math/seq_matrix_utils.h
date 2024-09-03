@@ -9,6 +9,8 @@ Matrix seq_matrix_nulled(size_t rows, size_t cols);
 
 Matrix seq_matrix_copy(const Matrix matrix_to_copy);
 
+void seq_matrix_replace(Matrix *to_replace, const Matrix matrix_to_copy);
+
 Matrix seq_matrix_array_to_matrix(double *array, size_t length);
 
 #endif

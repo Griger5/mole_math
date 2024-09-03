@@ -13,4 +13,6 @@ Matrix matrix_init(size_t rows, size_t cols);
 
 void matrix_free(Matrix *matrix);
 
+#define MFREE(matrix) matrix_free(&matrix)
+
 #endif

@@ -11,6 +11,8 @@ Matrix matrix_nulled(size_t rows, size_t cols);
 
 Matrix matrix_copy(const Matrix matrix_to_copy);
 
+void matrix_replace(Matrix *to_replace, const Matrix matrix_to_copy);
+
 Matrix matrix_array_to_matrix(double *array, size_t length);
 
 #endif

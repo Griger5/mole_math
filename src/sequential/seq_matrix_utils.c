@@ -38,6 +38,11 @@ Matrix seq_matrix_copy(const Matrix matrix_to_copy) {
     return copy;
 }
 
+void seq_matrix_replace(Matrix *to_replace, const Matrix matrix_to_copy) {
+    matrix_free(to_replace);
+    *to_replace = seq_matrix_copy(matrix_to_copy);
+}
+
 Matrix seq_matrix_array_to_matrix(double *array, size_t length) {
     Matrix matrix = matrix_init(1, length);
 

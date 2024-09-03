@@ -28,6 +28,10 @@ Matrix matrix_copy(const Matrix matrix_to_copy) {
     return seq_matrix_copy(matrix_to_copy);
 }
 
+void matrix_replace(Matrix *to_replace, const Matrix matrix_to_copy) {
+    seq_matrix_replace(to_replace, matrix_to_copy);
+}
+
 Matrix matrix_array_to_matrix(double *array, size_t length) {
     return seq_matrix_array_to_matrix(array, length);
 }
