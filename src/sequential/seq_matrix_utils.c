@@ -39,7 +39,9 @@ Matrix seq_matrix_copy(const Matrix matrix_to_copy) {
 }
 
 void seq_matrix_replace(Matrix *to_replace, const Matrix matrix_to_copy) {
-    matrix_free(to_replace);
+    if (to_replace->values != NULL) {
+        matrix_free(to_replace);
+    }
     *to_replace = seq_matrix_copy(matrix_to_copy);
 }
 
