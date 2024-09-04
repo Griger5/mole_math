@@ -1,4 +1,4 @@
-.PHONY: all clean compile_main compile_seq compile_test
+.PHONY: all clean compile_main compile_seq compile_omp compile_test
 
 CC := gcc
 LDLIBS := -lm
@@ -15,10 +15,14 @@ SEQ := ./src/sequential
 SEQ_SRCS := $(wildcard $(SEQ)/*.c)
 SEQ_OBJS := $(patsubst $(SEQ)/%.c, $(BUILD)/%.o, $(SEQ_SRCS))
 
+OMP := ./src/openmp
+OMP_SRCS := $(wildcard $(OMP)/*.c)
+OMP_OBJS := $(patsubst $(OMP)/%.c, $(BUILD)/%.o, $(OMP_SRCS))
+
 TEST := ./test
 
-all: $(LIB) $(BUILD) compile_main compile_seq compile_test
-	$(CC) -shared -o $(LIB)/libmolemath.so $(MATRIX_OBJS) $(SEQ_OBJS) $(LDLIBS)
+all: $(LIB) $(BUILD) compile_main compile_seq compile_omp
+	$(CC) -shared -o $(LIB)/libmolemath.so $(MATRIX_OBJS) $(SEQ_OBJS) $(OMP_OBJS) -fopenmp $(LDLIBS)
 
 compile_main:
 	$(MAKE) -C $(MATRIX)
@@ -26,9 +30,11 @@ compile_main:
 compile_seq:
 	$(MAKE) -C $(SEQ)
 
+compile_omp:
+	$(MAKE) -C $(OMP)
+
 compile_test:
-	$(MAKE) -C $(TEST) clean
-	$(MAKE) -C $(TEST)
+	$(MAKE) -C $(TEST) clean all
 
 $(BUILD) $(LIB):
 	@mkdir $@

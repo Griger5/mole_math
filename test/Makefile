@@ -1,7 +1,7 @@
 .PHONY: all clean
 
 CC := gcc
-CFLAGS := -Wall -Wextra
+CFLAGS := -Wall -Wextra -fopenmp
 BUILD := ./bin
 LDLIBS := -lcunit -lmolemath -lm
 

@@ -5,11 +5,16 @@ compile() {
     make
 }
 
+compile_test() {
+    make compile_test
+}
+
 install_lib() {
     cp -r include/mole_math /usr/local/include/ 
     compile
     cp lib/libmolemath.so /usr/local/lib/ 
     ldconfig
+    compile_test
 }
 
 case $1 in

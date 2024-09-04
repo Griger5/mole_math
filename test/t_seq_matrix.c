@@ -397,6 +397,11 @@ int main() {
     CU_pSuite mat_prop_Suite = NULL;
     mat_prop_Suite = CU_add_suite("seq_matrix_properties", init_suite_prop, clean_suite_prop);
 
+    if (NULL == mat_prop_Suite) {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+
     if (NULL == CU_add_test(mat_prop_Suite, "test 1 of seq_matrix_determinant", test_matrix_determinant1)) {
         CU_cleanup_registry();
         return CU_get_error();
@@ -413,6 +418,11 @@ int main() {
     CU_pSuite mat_scal_Suite = NULL;
     mat_scal_Suite = CU_add_suite("seq_matrix_scalars", init_suite_scal, clean_suite_scal);
 
+    if (NULL == mat_scal_Suite) {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+
     if (NULL == CU_add_test(mat_scal_Suite, "test 1 of seq_matrix_subtract_scalar", test_matrix_subtract_scalar)) {
         CU_cleanup_registry();
         return CU_get_error();
@@ -424,6 +434,11 @@ int main() {
 
     CU_pSuite mat_tran_Suite = NULL;
     mat_tran_Suite = CU_add_suite("seq_matrix_transform", init_suite_tran, clean_suite_tran);
+
+    if (NULL == mat_tran_Suite) {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
 
     if (NULL == CU_add_test(mat_tran_Suite, "test 1 of seq_matrix_subtract_rows", test_matrix_subtract_rows1)) {
         CU_cleanup_registry();
@@ -456,6 +471,11 @@ int main() {
 
     CU_pSuite mat_util_Suite = NULL;
     mat_util_Suite = CU_add_suite("seq_matrix_transform", init_suite_util, clean_suite_util);
+
+    if (NULL == mat_util_Suite) {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
 
     if (NULL == CU_add_test(mat_util_Suite, "test 1 of seq_matrix_identity", test_matrix_identity)) {
         CU_cleanup_registry();
