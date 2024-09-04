@@ -3,7 +3,7 @@
 CC := gcc
 CFLAGS := -Wall -Wextra
 BUILD := ./bin
-LDLIBS := -lcunit -lmolemath
+LDLIBS := -lcunit -lmolemath -lm
 
 DIR_SRCS := $(wildcard ./*.c)
 DIR_OBJS := $(patsubst ./%.c, $(BUILD)/%.exe, $(DIR_SRCS))
