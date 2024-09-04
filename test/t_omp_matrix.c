@@ -4,6 +4,7 @@
 #include "../include/mole_math/matrix_define.h"
 #include "../include/mole_math/seq_matrix_utils.h"
 #include "../include/mole_math/omp_matrix_operations.h"
+#include "../include/mole_math/omp_matrix_scalars.h"
 #include "../include/mole_math/omp_matrix_utils.h"
 
 static Matrix matrix_a;
@@ -105,6 +106,42 @@ void test_matrix_multiply_elements2(void) {
     CU_ASSERT_PTR_NULL(result.values);
 }
 
+int init_suite_scal(void) {
+    matrix_a = matrix_init(2,2);
+
+    if (matrix_a.values == NULL) return -1;
+
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2; j++) {
+            matrix_a.values[i][j] = i + j + 1;
+        }
+    }
+
+    return 0;
+}
+
+int clean_suite_scal(void) {
+    MFREE(matrix_a);
+
+    return 0;
+}
+
+void test_matrix_subtract_scalar(void) {
+    omp_matrix_subtract_scalar(&matrix_a, 0.5);
+
+    CU_ASSERT_EQUAL(matrix_a.values[0][0], 0.5);
+    CU_ASSERT_EQUAL(matrix_a.values[0][1], 1.5);
+    CU_ASSERT_EQUAL(matrix_a.values[1][0], 1.5);
+    CU_ASSERT_EQUAL(matrix_a.values[1][1], 2.5);
+}
+
+void test_matrix_multiply_row_scalar(void) {
+    omp_matrix_multiply_row_scalar(&matrix_a, 1, -4);
+
+    CU_ASSERT_EQUAL(matrix_a.values[1][0], -6.0);
+    CU_ASSERT_EQUAL(matrix_a.values[1][1], -10.0);
+}
+
 int init_suite_util(void) {
     matrix_a = matrix_init(1,3);
 
@@ -186,40 +223,57 @@ int main() {
     if (CUE_SUCCESS != CU_initialize_registry()) return CU_get_error();
 
     CU_pSuite mat_oper_Suite = NULL;
-    mat_oper_Suite = CU_add_suite("seq_matrix_operations", init_suite_oper, clean_suite_oper);
+    mat_oper_Suite = CU_add_suite("omp_matrix_operations", init_suite_oper, clean_suite_oper);
    
     if (NULL == mat_oper_Suite) {
         CU_cleanup_registry();
         return CU_get_error();
     }
 
-    if (NULL == CU_add_test(mat_oper_Suite, "test 1 of seq_matrix_multiply", test_matrix_multiply1)) {
+    if (NULL == CU_add_test(mat_oper_Suite, "test 1 of omp_matrix_multiply", test_matrix_multiply1)) {
         CU_cleanup_registry();
         return CU_get_error();
     }
-    if (NULL == CU_add_test(mat_oper_Suite, "test 2 of seq_matrix_multiply", test_matrix_multiply2)) {
+    if (NULL == CU_add_test(mat_oper_Suite, "test 2 of omp_matrix_multiply", test_matrix_multiply2)) {
         CU_cleanup_registry();
         return CU_get_error();
     }
-    if (NULL == CU_add_test(mat_oper_Suite, "test 1 of seq_matrix_subtract_elements", test_matrix_subtract_elements1)) {
+    if (NULL == CU_add_test(mat_oper_Suite, "test 1 of omp_matrix_subtract_elements", test_matrix_subtract_elements1)) {
         CU_cleanup_registry();
         return CU_get_error();
     }
-    if (NULL == CU_add_test(mat_oper_Suite, "test 2 of seq_matrix_subtract_elements", test_matrix_subtract_elements2)) {
+    if (NULL == CU_add_test(mat_oper_Suite, "test 2 of omp_matrix_subtract_elements", test_matrix_subtract_elements2)) {
         CU_cleanup_registry();
         return CU_get_error();
     }
-    if (NULL == CU_add_test(mat_oper_Suite, "test 1 of seq_matrix_multiply_elements", test_matrix_multiply_elements1)) {
+    if (NULL == CU_add_test(mat_oper_Suite, "test 1 of omp_matrix_multiply_elements", test_matrix_multiply_elements1)) {
         CU_cleanup_registry();
         return CU_get_error();
     }
-    if (NULL == CU_add_test(mat_oper_Suite, "test 2 of seq_matrix_multiply_elements", test_matrix_multiply_elements2)) {
+    if (NULL == CU_add_test(mat_oper_Suite, "test 2 of omp_matrix_multiply_elements", test_matrix_multiply_elements2)) {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+
+    CU_pSuite mat_scal_Suite = NULL;
+    mat_scal_Suite = CU_add_suite("omp_matrix_scalars", init_suite_scal, clean_suite_scal);
+
+    if (NULL == mat_scal_Suite) {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+
+    if (NULL == CU_add_test(mat_scal_Suite, "test 1 of omp_matrix_subtract_scalar", test_matrix_subtract_scalar)) {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+    if (NULL == CU_add_test(mat_scal_Suite, "test 1 of omp_matrix_multiply_row_scalar", test_matrix_multiply_row_scalar)) {
         CU_cleanup_registry();
         return CU_get_error();
     }
 
     CU_pSuite mat_util_Suite = NULL;
-    mat_util_Suite = CU_add_suite("omp_matrix_transform", init_suite_util, clean_suite_util);
+    mat_util_Suite = CU_add_suite("omp_matrix_utils", init_suite_util, clean_suite_util);
 
     if (NULL == mat_util_Suite) {
         CU_cleanup_registry();

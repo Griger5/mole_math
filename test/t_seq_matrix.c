@@ -470,7 +470,7 @@ int main() {
     }
 
     CU_pSuite mat_util_Suite = NULL;
-    mat_util_Suite = CU_add_suite("seq_matrix_transform", init_suite_util, clean_suite_util);
+    mat_util_Suite = CU_add_suite("seq_matrix_utils", init_suite_util, clean_suite_util);
 
     if (NULL == mat_util_Suite) {
         CU_cleanup_registry();
