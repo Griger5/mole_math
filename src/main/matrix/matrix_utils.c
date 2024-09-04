@@ -24,6 +24,10 @@ Matrix matrix_nulled(size_t rows, size_t cols) {
     return seq_matrix_nulled(rows, cols);
 }
 
+Matrix matrix_random(size_t rows, size_t cols) {
+    return seq_matrix_random(rows, cols);
+}
+
 Matrix matrix_copy(const Matrix matrix_to_copy) {
     return seq_matrix_copy(matrix_to_copy);
 }

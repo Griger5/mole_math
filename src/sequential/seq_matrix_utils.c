@@ -1,3 +1,6 @@
+#include <stdlib.h>
+#include <time.h>
+
 #include "../../include/mole_math/seq_matrix_utils.h"
 
 Matrix seq_matrix_identity(size_t N) {
@@ -19,6 +22,18 @@ Matrix seq_matrix_nulled(size_t rows, size_t cols) {
     matrix.values = NULL;
 
     return matrix;
+}
+
+Matrix seq_matrix_random(size_t rows, size_t cols) {
+    Matrix random_mat = matrix_init(rows, cols);
+
+    for (size_t i = 0; i < rows; i++) {
+        for (size_t j = 0; j < cols; j++) {
+            random_mat.values[i][j] = (double)rand()/RAND_MAX;
+        }
+    }
+
+    return random_mat;
 }
 
 Matrix seq_matrix_copy(const Matrix matrix_to_copy) {

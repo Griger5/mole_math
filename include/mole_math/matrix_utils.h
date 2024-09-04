@@ -9,6 +9,8 @@ Matrix matrix_identity(size_t N);
 
 Matrix matrix_nulled(size_t rows, size_t cols);
 
+Matrix matrix_random(size_t rows, size_t cols);
+
 Matrix matrix_copy(const Matrix matrix_to_copy);
 
 void matrix_replace(Matrix *to_replace, const Matrix matrix_to_copy);
