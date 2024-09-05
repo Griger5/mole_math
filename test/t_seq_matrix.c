@@ -1,6 +1,7 @@
 #include <CUnit/Basic.h>
 
 #include "../include/mole_math/matrix_define.h"
+#include "../include/mole_math/seq_matrix_funcs.h"
 #include "../include/mole_math/seq_matrix_operations.h"
 #include "../include/mole_math/seq_matrix_properties.h"
 #include "../include/mole_math/seq_matrix_scalars.h"
@@ -12,6 +13,34 @@ static Matrix matrix_b;
 static Matrix matrix_c;
 static Matrix matrix_d;
 static Matrix result;
+
+int init_suite_func(void) {
+    matrix_a = matrix_init(2,2);
+
+    if (matrix_a.values == NULL) return -1;
+
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2; j++) {
+            matrix_a.values[i][j] = i + j + 1;
+        }
+    }
+
+    return 0;
+}
+
+int clean_suite_func(void) {
+    MFREE(matrix_a);
+
+    return 0;
+}
+
+void test_matrix_sum_row1(void) {
+    CU_ASSERT_EQUAL(seq_matrix_sum_row(matrix_a, 0), 3.0);
+}
+
+void test_matrix_sum_row2(void) {
+    CU_ASSERT(isnan(seq_matrix_sum_row(matrix_a, 2)));
+}
 
 int init_suite_oper(void) {
     matrix_a = matrix_init(2,2);
@@ -360,6 +389,23 @@ void test_matrix_array_to_matrix(void) {
 
 int main() {
     if (CUE_SUCCESS != CU_initialize_registry()) return CU_get_error();
+
+    CU_pSuite mat_func_Suite = NULL;
+    mat_func_Suite = CU_add_suite("seq_matrix_funcs", init_suite_func, clean_suite_func);
+
+    if (NULL == mat_func_Suite) {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+
+    if (NULL == CU_add_test(mat_func_Suite, "test 1 of seq_matrix_sum_row", test_matrix_sum_row1)) {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+    if (NULL == CU_add_test(mat_func_Suite, "test 1 of seq_matrix_sum_row", test_matrix_sum_row2)) {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
 
     CU_pSuite mat_oper_Suite = NULL;
     mat_oper_Suite = CU_add_suite("seq_matrix_operations", init_suite_oper, clean_suite_oper);
