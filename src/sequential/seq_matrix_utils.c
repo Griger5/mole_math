@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <time.h>
 
 #include "../../include/mole_math/seq_matrix_utils.h"
 
