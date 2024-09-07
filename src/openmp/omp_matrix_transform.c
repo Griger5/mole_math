@@ -7,9 +7,8 @@ void omp_matrix_subtract_rows(Matrix *matrix, size_t row_minuend, size_t row_sub
     size_t cols = matrix->cols;
     
     if (row_minuend < matrix->rows && row_subtrahend < matrix->rows && row_minuend != row_subtrahend) {
-        size_t i;
-        #pragma omp parallel for private(i) shared(matrix, row_minuend, row_subtrahend, multiplier) 
-        for (i = 0; i < cols; i++) {
+        #pragma omp parallel for
+        for (size_t i = 0; i < cols; i++) {
             matrix->values[row_minuend][i] = matrix->values[row_minuend][i] - multiplier * matrix->values[row_subtrahend][i];
         }
     }
@@ -18,11 +17,10 @@ void omp_matrix_subtract_rows(Matrix *matrix, size_t row_minuend, size_t row_sub
 void omp_matrix_switch_rows(Matrix *matrix, size_t row_1, size_t row_2) {
     size_t cols = matrix->cols;
     double temp;
-    size_t i;
 
     if (row_1 < matrix->rows && row_2 < matrix->rows) {
-        #pragma omp parallel for private(i) shared(matrix, row_1, row_2) 
-        for (i = 0; i < cols; i++) {
+        #pragma omp parallel for private(temp)
+        for (size_t i = 0; i < cols; i++) {
             temp = matrix->values[row_1][i];
             matrix->values[row_1][i] = matrix->values[row_2][i];
             matrix->values[row_2][i] = temp;        
@@ -45,6 +43,7 @@ Matrix omp_matrix_inverse(const Matrix matrix) {
     for (size_t i = 0; i < N; i++) {
         if (matrix_copied.values[i][i] == 0) return nulled;
 
+        #pragma omp parallel for private(ratio)
         for (size_t j = i+1; j < N; j++) {
             ratio = matrix_copied.values[j][i] / matrix_copied.values[i][i];
             omp_matrix_subtract_rows(&matrix_copied, j, i, ratio);
@@ -52,16 +51,23 @@ Matrix omp_matrix_inverse(const Matrix matrix) {
         }
     }
 
-    for (int i = N-1; i >= 0; i--) {
-        for (int j = i; j >= 0; j--) {
-            ratio = matrix_copied.values[j][i] / matrix_copied.values[i][i];
-            omp_matrix_subtract_rows(&matrix_copied, j, i, ratio);
-            omp_matrix_subtract_rows(&inverted, j, i, ratio);
-        }
-    }
+    int j;
 
-    for (size_t i = 0; i < N; i++) {
-        omp_matrix_multiply_row_scalar(&inverted, i, 1/matrix_copied.values[i][i]);
+    #pragma omp parallel 
+    {
+        #pragma omp for private(j, ratio)
+        for (int i = N-1; i >= 0; i--) {
+            for (j = i; j >= 0; j--) {
+                ratio = matrix_copied.values[j][i] / matrix_copied.values[i][i];
+                omp_matrix_subtract_rows(&matrix_copied, j, i, ratio);
+                omp_matrix_subtract_rows(&inverted, j, i, ratio);
+            }
+        }
+
+        #pragma omp for
+        for (size_t i = 0; i < N; i++) {
+            omp_matrix_multiply_row_scalar(&inverted, i, 1/matrix_copied.values[i][i]);
+        }
     }
 
     matrix_free(&matrix_copied);

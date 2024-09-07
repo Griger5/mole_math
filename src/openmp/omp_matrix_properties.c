@@ -43,28 +43,24 @@ double omp_matrix_determinant(Matrix matrix) {
         }
     }
 
-    size_t i,j;
+    size_t i;
     int det_is_zero = 0;
 
-    #pragma omp parallel private(i,j,ratio) shared(matrix_copied, determinant, det_is_zero)
+    #pragma omp parallel private(i,ratio)
     {
         for (i = 0; i < N; i++) {
             if (det_is_zero) continue;
 
-            if (matrix_copied.values[i][i] == 0) {
-                det_is_zero = 1;
-            }
+            if (matrix_copied.values[i][i] == 0) det_is_zero = 1;
+            
             #pragma omp for
-            for (j = i+1; j < N; j++) {
+            for (size_t j = i+1; j < N; j++) {
                 ratio = matrix_copied.values[j][i] / matrix_copied.values[i][i];
                 omp_matrix_subtract_rows(&matrix_copied, j, i, ratio);
             }
 
-            #pragma omp barrier
-            if (omp_get_thread_num() == 0)
-            {
+            #pragma omp single
             determinant *= matrix_copied.values[i][i];
-            }
         }
     }
 
