@@ -1,4 +1,3 @@
-#include <stdarg.h>
 #include <omp.h>
 
 #include "../../../include/mole_math/matrix_funcs.h"
