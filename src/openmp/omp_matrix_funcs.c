@@ -6,7 +6,7 @@
 double omp_matrix_sum_row(const Matrix matrix, size_t row) {
     size_t cols = matrix.cols;
 
-    double sum;
+    double sum = 0;
 
     if (row >= matrix.rows) return NAN;
 

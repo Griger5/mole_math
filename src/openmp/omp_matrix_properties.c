@@ -51,7 +51,10 @@ double omp_matrix_determinant(Matrix matrix) {
         for (i = 0; i < N; i++) {
             if (det_is_zero) continue;
 
-            if (matrix_copied.values[i][i] == 0) det_is_zero = 1;
+            if (matrix_copied.values[i][i] == 0) {
+                det_is_zero = 1;
+                determinant = 0;
+            }
             
             #pragma omp for
             for (size_t j = i+1; j < N; j++) {
