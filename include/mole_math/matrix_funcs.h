@@ -3,6 +3,6 @@
 
 #include <mole_math/matrix_define.h>
 
-double matrix_sum_row(const Matrix matrix, size_t row);
+double matrix_sum_row(const Matrix matrix, size_t row_num, char flag);
 
 #endif
