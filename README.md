@@ -60,6 +60,7 @@ The *Matrix* is composed of 3 fields: *size_t rows*, *size_t cols*, *double \*\*
 some_matrix.values[i][j] // returns the value of an entry at i-th row and j-th column
 ```
 <br>
+
 If a Matrix-returning function fails, due to allocation failure or otherwise (f.e. *matrix_inverse* was called with a non-square matrix), it will return a Matrix whose *values* field is equal to *NULL*.  
 <br>
 
@@ -103,6 +104,7 @@ For convenience, a macro was added to simplify freeing, so you can just do:
 MFREE(some_matrix)
 ```
 <br>
+
 Most functions can be called with an additional parameter specifying if a sequential or a parallelized version should be used. All function calls below are valid and won't cause warning or errors.
 
 ```c
