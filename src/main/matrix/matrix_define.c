@@ -29,4 +29,6 @@ void matrix_free(Matrix *matrix) {
         free(matrix->values[0]);
         free(matrix->values);
     }
+
+    matrix->values = NULL;
 }
