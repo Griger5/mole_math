@@ -29,12 +29,13 @@ sudo ./setup.sh install
 ```
 The script takes care of compiling all required files into a shared library with *Make*. It also as compiles the tests. **sudo** command is needed, because the script copies the headers and compiled library into */usr/local/include/* and */usr/local/lib/* directories respectively.
 <br>
+
 To run the tests, enter the *test* directory and execute *run_tests* script:
 ```sh
 cd test
 ./run_tests.sh
 ```
-<br>
+
 To uninstall the library, simply execute:
 
 ```sh
@@ -110,7 +111,9 @@ matrix_inverse(some_matrix, 's') // specify sequential version
 matrix_inverse(some_matrix, 'o') // specify openmp version
 ```
 If a function is called with no additional parameter, it will, somewhat heuristically, decide which version to use on its own, depending on the problem size and the number of CPU cores on the device it's running on.
+
 <br>
+
 Regular assignment operator should be used with caution when dealing with matrices, as it can cause memory leaks. If you want to replace the old values of an already existing matrix, use *matrix_replace*.
 ```c
 #include <mole_math.h>
