@@ -22,6 +22,8 @@ size_t matrix_get_cols(const Matrix matrix);
 
 double matrix_get_determinant(const Matrix matrix);
 
+void matrix_reset_properties(Matrix *matrix);
+
 #define MFREE(MATRIX__matrix) matrix_free(&MATRIX__matrix)
 
 #endif
