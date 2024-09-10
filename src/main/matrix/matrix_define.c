@@ -38,3 +38,19 @@ void matrix_free(Matrix *matrix) {
 
     matrix->values = NULL;
 }
+
+size_t matrix_get_rows(const Matrix matrix) {
+    return matrix.rows;
+}
+
+size_t matrix_get_cols(const Matrix matrix) {
+    return matrix.cols;
+}
+
+double matrix_get_determinant(const Matrix matrix) {
+    return *matrix.determinant;
+}
+
+void matrix_reset_properties(Matrix *matrix) {
+    *matrix->determinant = INFINITY;
+}

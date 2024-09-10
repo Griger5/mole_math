@@ -12,6 +12,8 @@ void omp_matrix_subtract_scalar(Matrix *matrix, double scalar) {
             matrix->values[i][j] = matrix->values[i][j] - scalar;
         }
     }
+
+    matrix_reset_properties(matrix);
 }
 
 void omp_matrix_multiply_row_scalar(Matrix *matrix, size_t row_num, double scalar) {
@@ -23,4 +25,6 @@ void omp_matrix_multiply_row_scalar(Matrix *matrix, size_t row_num, double scala
             matrix->values[row_num][i] = matrix->values[row_num][i] * scalar;
         }
     }
+
+    if (!isinf(*matrix->determinant)) *matrix->determinant *= scalar;
 }

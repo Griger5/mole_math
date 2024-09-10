@@ -26,6 +26,10 @@ Matrix seq_matrix_multiply(const Matrix matrix_a, const Matrix matrix_b) {
         }
     }
 
+    if (!isinf(*matrix_a.determinant) && !isinf(*matrix_b.determinant)) {
+        *result.determinant = (*matrix_a.determinant) * (*matrix_b.determinant);
+    }
+
     return result;
 }
 

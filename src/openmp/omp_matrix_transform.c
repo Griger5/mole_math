@@ -28,6 +28,8 @@ void omp_matrix_switch_rows(Matrix *matrix, size_t row_1, size_t row_2) {
             matrix->values[row_2][i] = temp;        
         }
     }
+
+    if (!isinf(*matrix->determinant)) *matrix->determinant *= -1;
 }
 
 Matrix omp_matrix_inverse(Matrix matrix) {
