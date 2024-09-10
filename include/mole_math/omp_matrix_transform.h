@@ -1,6 +1,7 @@
 #ifndef OMP_MATRIX_TRANSFORM_H
 #define OMP_MATRIX_TRANSFORM_H
 
+#define PRIVATE_MAT
 #include <mole_math/matrix_define.h>
 
 void omp_matrix_switch_rows(Matrix *matrix, size_t row_1, size_t row_2);

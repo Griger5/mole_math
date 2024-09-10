@@ -1,6 +1,7 @@
 #ifndef MATRIX_UTILS_H
 #define MATRIX_UTILS_H
 
+#define PRIVATE_MAT
 #include <mole_math/matrix_define.h>
 
 void matrix_print(const Matrix matrix);

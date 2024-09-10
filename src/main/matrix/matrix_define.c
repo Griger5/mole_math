@@ -1,10 +1,11 @@
 #include <stdlib.h>
 
+#define PRIVATE_MAT
 #include "../../../include/mole_math/matrix_define.h"
 
 Matrix matrix_init(size_t rows, size_t cols) {
     Matrix matrix;
-    
+
     matrix.rows = rows;
     matrix.cols = cols;
 

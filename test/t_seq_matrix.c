@@ -1,5 +1,6 @@
 #include <CUnit/Basic.h>
 
+#define PRIVATE_MAT
 #include "../include/mole_math/matrix_define.h"
 #include "../include/mole_math/seq_matrix_funcs.h"
 #include "../include/mole_math/seq_matrix_operations.h"

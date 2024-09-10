@@ -4,9 +4,12 @@
 #include <stddef.h>
 
 typedef struct _Matrix {
-    size_t rows;
-    size_t cols;
     double **values;
+    struct {
+        size_t rows;
+        size_t cols;
+        double *determinant; // pointer, so it can be modified with pass by value, and so NULL can act as a sentinel value
+    } PRIVATE_MAT;
 } Matrix;
 
 Matrix matrix_init(size_t rows, size_t cols);

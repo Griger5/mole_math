@@ -1,6 +1,7 @@
 #include <CUnit/Basic.h>
 #include <omp.h>
 
+#define PRIVATE_MAT
 #include "../include/mole_math/matrix_define.h"
 #include "../include/mole_math/seq_matrix_utils.h"
 #include "../include/mole_math/omp_matrix_funcs.h"
@@ -386,18 +387,18 @@ int main() {
     if (CUE_SUCCESS != CU_initialize_registry()) return CU_get_error();
 
      CU_pSuite mat_func_Suite = NULL;
-    mat_func_Suite = CU_add_suite("seq_matrix_funcs", init_suite_func, clean_suite_func);
+    mat_func_Suite = CU_add_suite("omp_matrix_funcs", init_suite_func, clean_suite_func);
 
     if (NULL == mat_func_Suite) {
         CU_cleanup_registry();
         return CU_get_error();
     }
 
-    if (NULL == CU_add_test(mat_func_Suite, "test 1 of seq_matrix_sum_row", test_matrix_sum_row1)) {
+    if (NULL == CU_add_test(mat_func_Suite, "test 1 of omp_matrix_sum_row", test_matrix_sum_row1)) {
         CU_cleanup_registry();
         return CU_get_error();
     }
-    if (NULL == CU_add_test(mat_func_Suite, "test 1 of seq_matrix_sum_row", test_matrix_sum_row2)) {
+    if (NULL == CU_add_test(mat_func_Suite, "test 1 of omp_matrix_sum_row", test_matrix_sum_row2)) {
         CU_cleanup_registry();
         return CU_get_error();
     }

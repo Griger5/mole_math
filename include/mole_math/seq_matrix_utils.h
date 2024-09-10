@@ -1,6 +1,7 @@
 #ifndef SEQ_MATRIX_UTILS_H
 #define SEQ_MATRIX_UTILS_H
 
+#define PRIVATE_MAT
 #include <mole_math/matrix_define.h>
 
 Matrix seq_matrix_identity(size_t N);

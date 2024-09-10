@@ -1,6 +1,7 @@
 #ifndef SEQ_MATRIX_SCALARS_H
 #define SEQ_MATRIX_SCALARS_H
 
+#define PRIVATE_MAT
 #include <mole_math/matrix_define.h>
 
 void seq_matrix_subtract_scalar(Matrix *matrix, double scalar);
