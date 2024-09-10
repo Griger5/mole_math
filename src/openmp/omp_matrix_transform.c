@@ -1,3 +1,5 @@
+#include <math.h>
+
 #include "../../include/mole_math/omp_matrix_transform.h"
 #include "../../include/mole_math/omp_matrix_properties.h"
 #include "../../include/mole_math/omp_matrix_scalars.h"
@@ -28,10 +30,14 @@ void omp_matrix_switch_rows(Matrix *matrix, size_t row_1, size_t row_2) {
     }
 }
 
-Matrix omp_matrix_inverse(const Matrix matrix) {
+Matrix omp_matrix_inverse(Matrix matrix) {
     Matrix nulled = omp_matrix_nulled(matrix.rows, matrix.cols);
     
-    if (matrix.rows != matrix.cols || omp_matrix_determinant(matrix) == 0) return nulled;
+    if (matrix.rows != matrix.cols) return nulled;
+
+    if (isinf(*matrix.determinant)) omp_matrix_determinant(matrix);
+
+    if (*matrix.determinant == 0 || isnan(*matrix.determinant)) return nulled;
 
     size_t N = matrix.rows;
     Matrix inverted = omp_matrix_identity(N);
@@ -71,6 +77,8 @@ Matrix omp_matrix_inverse(const Matrix matrix) {
     }
 
     matrix_free(&matrix_copied);
+
+    *inverted.determinant = 1/(*matrix.determinant);
 
     return inverted;
 }

@@ -8,13 +8,19 @@ typedef struct _Matrix {
     struct {
         size_t rows;
         size_t cols;
-        double *determinant; // pointer, so it can be modified with pass by value, and so NULL can act as a sentinel value
+        double *determinant; // pointer, so it can be modified with pass by value
     } PRIVATE_MAT;
 } Matrix;
 
 Matrix matrix_init(size_t rows, size_t cols);
 
 void matrix_free(Matrix *matrix);
+
+size_t matrix_get_rows(const Matrix matrix);
+
+size_t matrix_get_cols(const Matrix matrix);
+
+double matrix_get_determinant(const Matrix matrix);
 
 #define MFREE(MATRIX__matrix) matrix_free(&MATRIX__matrix)
 

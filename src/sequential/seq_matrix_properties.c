@@ -9,9 +9,21 @@ double seq_matrix_determinant(Matrix matrix) {
 
     size_t N = matrix.rows;
     
-    if (N == 1) return matrix.values[0][0];
+    double determinant = 1;
+    
+    if (N == 1) {
+        determinant = matrix.values[0][0];
+        *matrix.determinant = determinant;
 
-    if (N == 2) return (matrix.values[0][0] * matrix.values[1][1] - matrix.values[0][1] * matrix.values[1][0]);
+        return determinant;
+    }
+
+    if (N == 2) {
+        determinant = (matrix.values[0][0] * matrix.values[1][1] - matrix.values[0][1] * matrix.values[1][0]);
+        *matrix.determinant = determinant;
+
+        return determinant;    
+    }
 
     if (N == 3) {
 
@@ -23,13 +35,15 @@ double seq_matrix_determinant(Matrix matrix) {
         double bdi = matrix.values[0][1] * matrix.values[1][0] * matrix.values[2][2];
         double afh = matrix.values[0][0] * matrix.values[1][2] * matrix.values[2][1];
 
-        return aei + bfg + cdh - ceg - bdi - afh;
+        determinant = aei + bfg + cdh - ceg - bdi - afh;
+        *matrix.determinant = determinant;
+
+        return determinant;
     }
 
     Matrix matrix_copied = seq_matrix_copy(matrix);
 
     double ratio;
-    double determinant = 1;
 
     if (matrix_copied.values[0][0] == 0) {
         for (size_t i = 1; i < N; i++) {
@@ -53,6 +67,8 @@ double seq_matrix_determinant(Matrix matrix) {
     }
 
     matrix_free(&matrix_copied);
+
+    *matrix.determinant = determinant;
 
     return determinant;
 }

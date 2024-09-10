@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <math.h>
 
 #define PRIVATE_MAT
 #include "../../../include/mole_math/matrix_define.h"
@@ -21,6 +22,10 @@ Matrix matrix_init(size_t rows, size_t cols) {
         }
         else matrix.values = NULL;
     }
+
+    matrix.determinant = malloc(sizeof(double));
+    
+    if (matrix.determinant != NULL) *matrix.determinant = INFINITY; // sentinel value
 
     return matrix;
 }

@@ -1,3 +1,5 @@
+#include <math.h>
+
 #include "../../include/mole_math/seq_matrix_transform.h"
 #include "../../include/mole_math/seq_matrix_properties.h"
 #include "../../include/mole_math/seq_matrix_scalars.h"
@@ -24,10 +26,14 @@ void seq_matrix_switch_rows(Matrix *matrix, size_t row_1, size_t row_2) {
     }
 }
 
-Matrix seq_matrix_inverse(const Matrix matrix) {
+Matrix seq_matrix_inverse(Matrix matrix) {
     Matrix nulled = seq_matrix_nulled(matrix.rows, matrix.cols);
     
-    if (matrix.rows != matrix.cols || seq_matrix_determinant(matrix) == 0) return nulled;
+    if (matrix.rows != matrix.cols) return nulled;
+
+    if (isinf(*matrix.determinant)) seq_matrix_determinant(matrix);
+
+    if (*matrix.determinant == 0 || isnan(*matrix.determinant)) return nulled;
 
     size_t N = matrix.rows;
     Matrix inverted = seq_matrix_identity(N);
@@ -59,6 +65,8 @@ Matrix seq_matrix_inverse(const Matrix matrix) {
     }
 
     matrix_free(&matrix_copied);
+
+    *inverted.determinant = 1/(*matrix.determinant);
 
     return inverted;
 }

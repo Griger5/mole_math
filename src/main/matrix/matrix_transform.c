@@ -39,7 +39,7 @@ void matrix_subtract_rows(Matrix *matrix, size_t row_minuend, size_t row_subtrah
     }
 }
 
-Matrix matrix_inverse(const Matrix matrix, char flag) {
+Matrix matrix_inverse(Matrix matrix, char flag) {
     size_t problem_size = matrix.rows * matrix.cols;
 
     Matrix result;
