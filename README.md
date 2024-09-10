@@ -27,7 +27,7 @@ or
 ```
 sudo ./setup.sh install
 ```
-The script takes care of compiling all required files into a shared library with *Make*. It also as compiles the tests. **sudo** command is needed, because the script copies the headers and compiled library into */usr/local/include/* and */usr/local/lib/* directories respectively.
+The script takes care of compiling all required files into a shared library with *Make*. It also as compiles the tests. **sudo** command is needed, because the script copies the headers and compiled library into */usr/local/include/*, */usr/local/lib/* and */usr/lib/* directories respectively.
 <br>
 
 To run the tests, enter the *test* directory and execute *run_tests* script:
@@ -55,13 +55,13 @@ gcc foo.c -o foo -lmolemath
 
 Matrices can be initialized with *matrix_init(rows, cols)*, but also with any function returning a *Matrix* type. All matrices are dynamically allocated and should be freed.
 
-The *Matrix* is composed of 3 fields: *size_t rows*, *size_t cols*, *double \*\*values*. *rows* and *cols* hold the number of rows and columns of the matrix, while *values* contains the actual matrix. *Matrix.values* is allocated as a contiguous block of memory in such a way, that regular indexing approach works just fine.
+The *Matrix* is composed of one public member and one private struct containing matrix's properties (number of rows, number of columns, determinant...), latter of which should not be changed. Values held by the private struct can be accessed with getters like *matrix_get_determinant*. You can access and change *Matrix*'s *values* field, but beware that some properties may become no longer valid, so it's best to use *matrix_reset_properties(some_matrix)* after that. Matrices are allocated as a contiguous block of memory in such a way, that regular indexing approach works just fine. All matrix's entries are defaulted to 0 when using *matrix_init(rows, cols)*. Matrix's properties, aside from *rows* and *cols*, are initialized as blank.
 ```c
 some_matrix.values[i][j] // returns the value of an entry at i-th row and j-th column
 ```
 <br>
 
-If a Matrix-returning function fails, due to allocation failure or otherwise (f.e. *matrix_inverse* was called with a non-square matrix), it will return a Matrix whose *values* field is equal to *NULL*.  
+If a Matrix-returning function fails, due to allocation failure or otherwise (f.e. *matrix_inverse* was called with a non-square matrix), it will return a Matrix whose *values* field is equal to *NULL*. Matrix-modifying functions will update matrix's properties.  
 <br>
 
 Example program:
