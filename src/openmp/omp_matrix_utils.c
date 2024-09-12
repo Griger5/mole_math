@@ -39,6 +39,21 @@ Matrix omp_matrix_random(size_t rows, size_t cols) {
     return random_mat;
 }
 
+Matrix omp_matrix_init_integers(size_t rows, size_t cols) {
+    Matrix int_mat = matrix_init(rows, cols);
+
+    size_t j;
+
+    #pragma omp parallel for private(j)
+    for (size_t i = 0; i < rows; i++) {
+        for (j = 0; j < cols; j++) {
+            int_mat.values[i][j] = i*cols + j + 1;
+        }
+    }
+
+    return int_mat;
+}
+
 Matrix omp_matrix_copy(const Matrix matrix_to_copy) {
     size_t rows = matrix_to_copy.rows;
     size_t cols = matrix_to_copy.cols;

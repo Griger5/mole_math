@@ -1,3 +1,5 @@
+#include <math.h>
+
 #include "../../include/mole_math/omp_matrix_scalars.h"
 
 void omp_matrix_subtract_scalar(Matrix *matrix, double scalar) {

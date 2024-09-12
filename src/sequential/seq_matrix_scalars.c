@@ -1,3 +1,5 @@
+#include <math.h>
+
 #include "../../include/mole_math/seq_matrix_scalars.h"
 
 void seq_matrix_subtract_scalar(Matrix *matrix, double scalar) {

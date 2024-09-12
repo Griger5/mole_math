@@ -1,3 +1,5 @@
+#include <math.h>
+
 #include "../../include/mole_math/omp_matrix_operations.h"
 #include "../../include/mole_math/omp_matrix_utils.h"
 

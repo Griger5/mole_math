@@ -61,6 +61,27 @@ Matrix matrix_random(size_t rows, size_t cols, char flag) {
     return result;
 }
 
+Matrix matrix_init_integers(size_t rows, size_t cols, char flag) {
+    size_t problem_size = rows * cols;
+
+    Matrix result;
+    
+    switch (flag) {
+        case 'o':
+            result = omp_matrix_init_integers(rows, cols);
+            break;
+        case 's':
+            result = seq_matrix_init_integers(rows, cols);
+            break;
+        default:
+            if ((double)problem_size/omp_get_num_procs() >= 2500/16.0) result = omp_matrix_init_integers(rows, cols);
+            else result = seq_matrix_init_integers(rows, cols);
+            break;
+    }
+
+    return result;
+}
+
 Matrix matrix_copy(const Matrix matrix_to_copy, char flag) {
     size_t problem_size = matrix_to_copy.rows * matrix_to_copy.cols;
 

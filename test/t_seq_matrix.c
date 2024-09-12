@@ -346,6 +346,19 @@ void test_matrix_random(void) {
     CU_ASSERT_DOUBLE_EQUAL(matrix_b.values[1][1], 0.798440, 0.000001);
 }
 
+void test_matrix_init_integers(void) {
+    Matrix temp = seq_matrix_init_integers(2,2);
+    seq_matrix_replace(&matrix_b, temp);
+    MFREE(temp);
+
+    CU_ASSERT_EQUAL(matrix_b.rows, 2);
+    CU_ASSERT_EQUAL(matrix_b.cols, 2)
+    CU_ASSERT_EQUAL(matrix_b.values[0][0], 1.0);
+    CU_ASSERT_EQUAL(matrix_b.values[0][1], 2.0);
+    CU_ASSERT_EQUAL(matrix_b.values[1][0], 3.0);
+    CU_ASSERT_EQUAL(matrix_b.values[1][1], 4.0);
+}
+
 void test_matrix_copy(void) {
     Matrix temp = seq_matrix_copy(matrix_a);
     seq_matrix_replace(&matrix_b, temp);
@@ -533,6 +546,10 @@ int main() {
         return CU_get_error();
     }
     if (NULL == CU_add_test(mat_util_Suite, "test 1 of seq_matrix_random", test_matrix_random)) {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+    if (NULL == CU_add_test(mat_util_Suite, "test 1 of seq_matrix_init_integers", test_matrix_init_integers)) {
         CU_cleanup_registry();
         return CU_get_error();
     }
