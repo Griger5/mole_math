@@ -25,13 +25,17 @@ void seq_matrix_switch_rows(Matrix *matrix, size_t row_1, size_t row_2) {
         }
     }
 
-    if (!isinf(*matrix->determinant)) *matrix->determinant *= -1;
+    if (matrix->determinant != NULL) {
+        if (!isinf(*matrix->determinant)) *matrix->determinant *= -1;
+    }
 }
 
 Matrix seq_matrix_inverse(Matrix matrix) {
     Matrix nulled = seq_matrix_nulled(matrix.rows, matrix.cols);
     
     if (matrix.rows != matrix.cols) return nulled;
+
+    if (matrix.values == NULL || matrix.determinant == NULL) return nulled;
 
     if (isinf(*matrix.determinant)) seq_matrix_determinant(matrix);
 

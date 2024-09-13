@@ -26,7 +26,9 @@ void omp_matrix_multiply_row_scalar(Matrix *matrix, size_t row_num, double scala
         for (size_t i = 0; i < cols; i++) {
             matrix->values[row_num][i] = matrix->values[row_num][i] * scalar;
         }
-    }
 
-    if (!isinf(*matrix->determinant)) *matrix->determinant *= scalar;
+        if (matrix->determinant != NULL) {
+            if (!isinf(*matrix->determinant)) *matrix->determinant *= scalar;
+        }
+    }
 }

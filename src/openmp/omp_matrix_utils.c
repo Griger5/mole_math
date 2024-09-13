@@ -1,14 +1,17 @@
 #include <stdlib.h>
+#include <math.h>
 
 #include "../../include/mole_math/omp_matrix_utils.h"
 
 Matrix omp_matrix_identity(size_t N) {
     Matrix identity = matrix_init(N, N);
 
-    #pragma omp parallel for
-    for (size_t i = 0; i < N; i++) {
-        identity.values[i][i] = 1.0;
-    }
+    if (identity.values != NULL) {
+        #pragma omp parallel for
+        for (size_t i = 0; i < N; i++) {
+            identity.values[i][i] = 1.0;
+        }
+    }           
 
     return identity;
 }
@@ -20,6 +23,7 @@ Matrix omp_matrix_nulled(size_t rows, size_t cols) {
     matrix.cols = cols;
 
     matrix.values = NULL;
+    matrix.determinant = NULL;
 
     return matrix;
 }
@@ -29,10 +33,12 @@ Matrix omp_matrix_random(size_t rows, size_t cols) {
 
     size_t j;
 
-    #pragma omp parallel for private(j)
-    for (size_t i = 0; i < rows; i++) {
-        for (j = 0; j < cols; j++) {
-            random_mat.values[i][j] = (double)rand()/RAND_MAX;
+    if (random_mat.values != NULL) {
+        #pragma omp parallel for private(j)
+        for (size_t i = 0; i < rows; i++) {
+            for (j = 0; j < cols; j++) {
+                random_mat.values[i][j] = (double)rand()/RAND_MAX;
+            }
         }
     }
 
@@ -44,10 +50,12 @@ Matrix omp_matrix_init_integers(size_t rows, size_t cols) {
 
     size_t j;
 
-    #pragma omp parallel for private(j)
-    for (size_t i = 0; i < rows; i++) {
-        for (j = 0; j < cols; j++) {
-            int_mat.values[i][j] = i*cols + j + 1;
+    if (int_mat.values != NULL) {
+        #pragma omp parallel for private(j)
+        for (size_t i = 0; i < rows; i++) {
+            for (j = 0; j < cols; j++) {
+                int_mat.values[i][j] = i*cols + j + 1;
+            }
         }
     }
 

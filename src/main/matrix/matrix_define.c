@@ -23,7 +23,7 @@ Matrix matrix_init(size_t rows, size_t cols) {
         else matrix.values = NULL;
     }
 
-    matrix.determinant = malloc(sizeof(double));
+    matrix.determinant = malloc(2*sizeof(double));
     
     if (matrix.determinant != NULL) *matrix.determinant = INFINITY; // sentinel value
 
@@ -35,6 +35,12 @@ void matrix_free(Matrix *matrix) {
         free(matrix->values[0]);
         free(matrix->values);
     }
+
+    /* if (matrix->determinant != NULL) {
+        //free(matrix->determinant);
+        //matrix->determinant = NULL;
+    } */
+    //matrix->determinant = NULL;
 
     matrix->values = NULL;
 }

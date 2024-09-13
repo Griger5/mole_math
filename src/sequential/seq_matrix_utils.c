@@ -1,12 +1,15 @@
 #include <stdlib.h>
+#include <math.h>
 
 #include "../../include/mole_math/seq_matrix_utils.h"
 
 Matrix seq_matrix_identity(size_t N) {
     Matrix identity = matrix_init(N, N);
 
-    for (size_t i = 0; i < N; i++) {
-        identity.values[i][i] = 1.0;
+    if (identity.values != NULL) {
+        for (size_t i = 0; i < N; i++) {
+            identity.values[i][i] = 1.0;
+        }
     }
 
     return identity;
@@ -19,6 +22,7 @@ Matrix seq_matrix_nulled(size_t rows, size_t cols) {
     matrix.cols = cols;
 
     matrix.values = NULL;
+    matrix.determinant = NULL;
 
     return matrix;
 }
@@ -26,9 +30,11 @@ Matrix seq_matrix_nulled(size_t rows, size_t cols) {
 Matrix seq_matrix_random(size_t rows, size_t cols) {
     Matrix random_mat = matrix_init(rows, cols);
 
-    for (size_t i = 0; i < rows; i++) {
-        for (size_t j = 0; j < cols; j++) {
-            random_mat.values[i][j] = (double)rand()/RAND_MAX;
+    if (random_mat.values != NULL) {
+        for (size_t i = 0; i < rows; i++) {
+            for (size_t j = 0; j < cols; j++) {
+                random_mat.values[i][j] = (double)rand()/RAND_MAX;
+            }
         }
     }
 
@@ -38,9 +44,11 @@ Matrix seq_matrix_random(size_t rows, size_t cols) {
 Matrix seq_matrix_init_integers(size_t rows, size_t cols) {
     Matrix int_mat = matrix_init(rows, cols);
 
-    for (size_t i = 0; i < rows; i++) {
-        for (size_t j = 0; j < cols; j++) {
-            int_mat.values[i][j] = i*cols + j + 1;
+    if (int_mat.values != NULL) {
+        for (size_t i = 0; i < rows; i++) {
+            for (size_t j = 0; j < cols; j++) {
+                int_mat.values[i][j] = i*cols + j + 1;
+            }
         }
     }
 
@@ -64,6 +72,10 @@ Matrix seq_matrix_copy(const Matrix matrix_to_copy) {
                 }
             }
         }
+    }
+
+    if (matrix_to_copy.determinant != NULL) {
+        if (!isinf(*matrix_to_copy.determinant)) *copy.determinant = *matrix_to_copy.determinant;
     }
 
     return copy;
