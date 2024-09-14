@@ -39,6 +39,48 @@ void matrix_subtract_rows(Matrix *matrix, size_t row_minuend, size_t row_subtrah
     }
 }
 
+Matrix matrix_transpose(const Matrix matrix, char flag) {
+    size_t problem_size = matrix.rows * matrix.cols;
+
+    Matrix result;
+    
+    switch (flag) {
+        case 'o':
+            result = omp_matrix_transpose(matrix);
+            break;
+        case 's':
+            result = seq_matrix_transpose(matrix);
+            break;
+        default:
+            if ((double)problem_size/omp_get_num_procs() >= 16384/16.0) result = omp_matrix_transpose(matrix);
+            else result = seq_matrix_transpose(matrix);
+            break;
+    }
+
+    return result;
+}
+
+Matrix matrix_ij_minor_matrix(const Matrix matrix, size_t i_row, size_t j_col, char flag) {
+    size_t problem_size = matrix.rows * matrix.cols;
+
+    Matrix result;
+    
+    switch (flag) {
+        case 'o':
+            result = omp_matrix_ij_minor_matrix(matrix, i_row, j_col);
+            break;
+        case 's':
+            result = seq_matrix_ij_minor_matrix(matrix, i_row, j_col);
+            break;
+        default:
+            if ((double)problem_size/omp_get_num_procs() >= 16384/16.0) result = omp_matrix_ij_minor_matrix(matrix, i_row, j_col);
+            else result = seq_matrix_ij_minor_matrix(matrix, i_row, j_col);
+            break;
+    }
+
+    return result;
+}
+
 Matrix matrix_inverse(Matrix matrix, char flag) {
     size_t problem_size = matrix.rows * matrix.cols;
 

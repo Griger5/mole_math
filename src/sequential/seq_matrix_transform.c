@@ -30,6 +30,75 @@ void seq_matrix_switch_rows(Matrix *matrix, size_t row_1, size_t row_2) {
     }
 }
 
+Matrix seq_matrix_transpose(const Matrix matrix) {
+    size_t rows = matrix.rows;
+    size_t cols = matrix.cols;
+    Matrix transposed;
+
+    if (matrix.values == NULL) return seq_matrix_nulled(rows, cols);
+
+    if (rows == cols) {
+        transposed = matrix_init(rows, cols);
+
+        if (transposed.values != NULL) {
+            for (size_t i = 0; i < rows; i++) {
+                for (size_t j = 0; j < cols; j++) {
+                    transposed.values[i][j] = matrix.values[j][i];
+                }
+            }
+        }
+    }
+    else {
+        transposed = matrix_init(cols, rows);
+
+        if (transposed.values != NULL) {
+            for (size_t i = 0; i < cols; i++) {
+                for (size_t j = 0; j < rows; j++) {
+                    transposed.values[i][j] = matrix.values[j][i];
+                }
+            }
+        }
+    }
+
+    return transposed;
+}
+
+Matrix seq_matrix_ij_minor_matrix(const Matrix matrix, size_t i_row, size_t j_col) {
+    size_t rows = matrix.rows;
+    size_t cols = matrix.cols;
+
+    if (i_row+1 <= 0 || j_col+1 <= 0) return seq_matrix_nulled(rows-1, cols-1);
+    if (rows != cols || (i_row >= rows || j_col >= cols)) return seq_matrix_nulled(rows-1, cols-1);
+
+    Matrix minor_matrix = matrix_init(rows-1, cols-1);
+
+    for (size_t i = 0; i < i_row; i++) {
+        for (size_t j = 0; j < j_col; j++) {
+            minor_matrix.values[i][j] = matrix.values[i][j];
+        }
+    }
+
+    for (size_t i = i_row; i < rows - 1; i++) {
+        for (size_t j = 0; j < j_col; j++) {
+            minor_matrix.values[i][j] = matrix.values[i+1][j];
+        }
+    }
+
+    for (size_t i = 0; i < i_row; i++) {
+        for (size_t j = j_col; j < cols - 1; j++) {
+            minor_matrix.values[i][j] = matrix.values[i][j+1];
+        }
+    }
+
+    for (size_t i = i_row; i < rows - 1; i++) {
+        for (size_t j = j_col; j < cols - 1; j++) {
+            minor_matrix.values[i][j] = matrix.values[i+1][j+1];
+        }
+    }
+
+    return minor_matrix;
+}
+
 Matrix seq_matrix_inverse(Matrix matrix) {
     Matrix nulled = seq_matrix_nulled(matrix.rows, matrix.cols);
     

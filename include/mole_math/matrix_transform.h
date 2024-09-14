@@ -8,6 +8,10 @@ void matrix_switch_rows(Matrix *matrix, size_t row_1, size_t row_2, char flag);
 
 void matrix_subtract_rows(Matrix *matrix, size_t row_minuend, size_t row_subtrahend, double multiplier, char flag);
 
+Matrix matrix_transpose(const Matrix matrix, char flag);
+
+Matrix matrix_ij_minor_matrix(const Matrix matrix, size_t i_row, size_t j_col, char flag);
+
 Matrix matrix_inverse(const Matrix matrix, char flag);
 
 #endif

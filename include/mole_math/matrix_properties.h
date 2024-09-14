@@ -6,4 +6,8 @@
 
 double matrix_determinant(Matrix matrix, char flag);
 
+double matrix_ij_minor(const Matrix matrix, size_t i_row, size_t j_col, char flag);
+
+Matrix matrix_cofactor(const Matrix matrix, char flag);
+
 #endif

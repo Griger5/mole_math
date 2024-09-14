@@ -86,3 +86,38 @@ double omp_matrix_determinant(Matrix matrix) {
 
     return sign*determinant;
 }
+
+double omp_matrix_ij_minor(const Matrix matrix, size_t i_row, size_t j_col) {
+    Matrix minor_matrix = omp_matrix_ij_minor_matrix(matrix, i_row, j_col);
+
+    if (minor_matrix.values == NULL) return NAN;
+
+    double minor = omp_matrix_determinant(minor_matrix);
+
+    matrix_free(&minor_matrix);
+
+    return minor;
+}
+
+Matrix omp_matrix_cofactor(const Matrix matrix) {
+    size_t rows = matrix.rows;
+    size_t cols = matrix.cols;
+
+    if (matrix.values == NULL) return omp_matrix_nulled(rows, cols);
+
+    Matrix cofactor_matrix = matrix_init(rows, cols);
+    int sign;
+    size_t j;
+
+    if (cofactor_matrix.values != NULL) {
+        #pragma omp parallel for private(j)
+        for (size_t i = 0; i < rows; i++) {
+            for (j = 0; j < cols; j++) {
+                sign = 1 - 2 * ((i+j)%2);
+                cofactor_matrix.values[i][j] = omp_matrix_ij_minor(matrix, i, j) * sign;
+            }
+        }
+    }
+
+    return cofactor_matrix;
+}

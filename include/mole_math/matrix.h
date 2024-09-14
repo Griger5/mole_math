@@ -14,6 +14,8 @@
 #include <mole_math/matrix_properties.h>
 
 #define matrix_determinant(MATRIX__matrix, ...) matrix_determinant(MATRIX__matrix, GET_FLAG(__VA_ARGS__))
+#define matrix_ij_minor(MATRIX__matrix, SIZE_T__i_row, SIZE_T__j_col, ...) matrix_ij_minor(MATRIX__matrix, SIZE_T__i_row, SIZE_T__j_col, GET_FLAG(__VA_ARGS__))
+#define matrix_cofactor(MATRIX__matrix, ...) matrix_cofactor(MATRIX__matrix, GET_FLAG(__VA_ARGS__))
 
 #include <mole_math/matrix_scalars.h>
 
@@ -24,6 +26,8 @@
 
 #define matrix_switch_rows(MATRIX_PTR__matrix, SIZE_T__row_1, SIZE_T__row_2, ...) matrix_switch_rows(MATRIX_PTR__matrix, SIZE_T__row_1, SIZE_T__row_2, GET_FLAG(__VA_ARGS__))
 #define matrix_subtract_rows(MATRIX_PTR__matrix, SIZE_T__row_minuend, SIZE_T__row_subtrahend, DOUBLE__multiplier, ...) matrix_subtract_rows(MATRIX_PTR__matrix, SIZE_T__row_minuend, SIZE_T__row_subtrahend, DOUBLE__multiplier, GET_FLAG(__VA_ARGS__))
+#define matrix_transpose(MATRIX__matrix, ...) matrix_transpose(MATRIX__matrix, GET_FLAG(__VA_ARGS__))
+#define matrix_ij_minor_matrix(MATRIX__matrix, SIZE_T__i_row, SIZE_T__j_col, ...) matrix_ij_minor_matrix(MATRIX__matrix, SIZE_T__i_row, SIZE_T__j_col, GET_FLAG(__VA_ARGS__))
 #define matrix_inverse(MATRIX__matrix, ...) matrix_inverse(MATRIX__matrix, GET_FLAG(__VA_ARGS__))
 
 #include <mole_math/matrix_utils.h>

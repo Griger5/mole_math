@@ -29,7 +29,90 @@ void omp_matrix_switch_rows(Matrix *matrix, size_t row_1, size_t row_2) {
         }
     }
 
-    if (!isinf(*matrix->determinant)) *matrix->determinant *= -1;
+    if (matrix->determinant != NULL) {
+        if (!isinf(*matrix->determinant)) *matrix->determinant *= -1;
+    }
+}
+
+Matrix omp_matrix_transpose(const Matrix matrix) {
+    size_t rows = matrix.rows;
+    size_t cols = matrix.cols;
+    Matrix transposed;
+    size_t j;
+
+    if (matrix.values == NULL) return omp_matrix_nulled(rows, cols);
+
+    if (rows == cols) {
+        transposed = matrix_init(rows, cols);
+
+        if (transposed.values != NULL) {
+            #pragma omp parallel for private(j)
+            for (size_t i = 0; i < rows; i++) {
+                for (j = 0; j < cols; j++) {
+                    transposed.values[i][j] = matrix.values[j][i];
+                }
+            }
+        }
+    }
+    else {
+        transposed = matrix_init(cols, rows);
+
+        if (transposed.values != NULL) {
+            #pragma omp parallel for private(j)
+            for (size_t i = 0; i < cols; i++) {
+                for (j = 0; j < rows; j++) {
+                    transposed.values[i][j] = matrix.values[j][i];
+                }
+            }
+        }
+    }
+
+    return transposed;
+}
+
+Matrix omp_matrix_ij_minor_matrix(const Matrix matrix, size_t i_row, size_t j_col) {
+    size_t rows = matrix.rows;
+    size_t cols = matrix.cols;
+
+    if (i_row+1 <= 0 || j_col+1 <= 0) return omp_matrix_nulled(rows-1, cols-1);
+    if (rows != cols || (i_row >= rows || j_col >= cols)) return omp_matrix_nulled(rows-1, cols-1);
+
+    Matrix minor_matrix = matrix_init(rows-1, cols-1);
+
+    size_t j;
+
+    #pragma omp parallel
+    {
+        #pragma omp for private(j)
+        for (size_t i = 0; i < i_row; i++) {
+            for (j = 0; j < j_col; j++) {
+                minor_matrix.values[i][j] = matrix.values[i][j];
+            }
+        }
+
+        #pragma omp for private(j)
+        for (size_t i = i_row; i < rows - 1; i++) {
+            for (j = 0; j < j_col; j++) {
+                minor_matrix.values[i][j] = matrix.values[i+1][j];
+            }
+        }
+
+        #pragma omp for private(j)
+        for (size_t i = 0; i < i_row; i++) {
+            for (j = j_col; j < cols - 1; j++) {
+                minor_matrix.values[i][j] = matrix.values[i][j+1];
+            }
+        }
+
+        #pragma omp for private(j)
+        for (size_t i = i_row; i < rows - 1; i++) {
+            for (j = j_col; j < cols - 1; j++) {
+                minor_matrix.values[i][j] = matrix.values[i+1][j+1];
+            }
+        }
+    }
+
+    return minor_matrix;
 }
 
 Matrix omp_matrix_inverse(Matrix matrix) {

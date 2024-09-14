@@ -72,3 +72,36 @@ double seq_matrix_determinant(Matrix matrix) {
 
     return determinant;
 }
+
+double seq_matrix_ij_minor(const Matrix matrix, size_t i_row, size_t j_col) {
+    Matrix minor_matrix = seq_matrix_ij_minor_matrix(matrix, i_row, j_col);
+
+    if (minor_matrix.values == NULL) return NAN;
+
+    double minor = seq_matrix_determinant(minor_matrix);
+
+    matrix_free(&minor_matrix);
+
+    return minor;
+}
+
+Matrix seq_matrix_cofactor(const Matrix matrix) {
+    size_t rows = matrix.rows;
+    size_t cols = matrix.cols;
+
+    if (matrix.values == NULL) return seq_matrix_nulled(rows, cols);
+
+    Matrix cofactor_matrix = matrix_init(rows, cols);
+    int sign;
+
+    if (cofactor_matrix.values != NULL) {
+        for (size_t i = 0; i < rows; i++) {
+            for (size_t j = 0; j < cols; j++) {
+                sign = 1 - 2 * ((i+j)%2);
+                cofactor_matrix.values[i][j] = seq_matrix_ij_minor(matrix, i, j) * sign;
+            }
+        }
+    }
+
+    return cofactor_matrix;
+}

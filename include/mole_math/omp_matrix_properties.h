@@ -6,4 +6,8 @@
 
 double omp_matrix_determinant(Matrix matrix);
 
+double omp_matrix_ij_minor(const Matrix matrix, size_t i_row, size_t j_col);
+
+Matrix omp_matrix_cofactor(const Matrix matrix);
+
 #endif
