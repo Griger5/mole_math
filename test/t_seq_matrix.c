@@ -160,6 +160,7 @@ int clean_suite_prop(void) {
     MFREE(matrix_a);
     MFREE(matrix_b);
     MFREE(matrix_c);
+    MFREE(result);
 
     return 0;
 }
@@ -174,6 +175,29 @@ void test_matrix_determinant2(void) {
 
 void test_matrix_determinant3(void) {
     CU_ASSERT(isnan(seq_matrix_determinant(matrix_c)));
+}
+
+void test_matrix_ij_minor1(void) {
+    CU_ASSERT_EQUAL(seq_matrix_ij_minor(matrix_a, 0, 0), 2.0);
+}
+
+void test_matrix_ij_minor2(void) {
+    CU_ASSERT(isnan(seq_matrix_ij_minor(matrix_a, 2, 2)));
+}
+
+void test_matrix_ij_minor3(void) {
+    CU_ASSERT(isnan(seq_matrix_ij_minor(matrix_c, 0, 0)));
+}
+
+void test_matrix_cofactor(void) {
+    Matrix temp = seq_matrix_cofactor(matrix_a);
+    seq_matrix_replace(&result, temp);
+    MFREE(temp);
+
+    CU_ASSERT_EQUAL(result.values[0][0], 2.0);
+    CU_ASSERT_EQUAL(result.values[0][1], -2.0);
+    CU_ASSERT_EQUAL(result.values[1][0], -1.0);
+    CU_ASSERT_EQUAL(result.values[1][1], 1.0);
 }
 
 int init_suite_scal(void) {
@@ -275,6 +299,44 @@ void test_matrix_switch_rows2(void) {
     CU_ASSERT_EQUAL(matrix_b.values[0][1], 5.0);
     CU_ASSERT_EQUAL(matrix_b.values[1][0], -3.0);
     CU_ASSERT_EQUAL(matrix_b.values[1][1], -7.0);
+}
+
+void test_matrix_transpose1(void) {
+    Matrix temp = seq_matrix_transpose(matrix_a);
+    seq_matrix_replace(&result, temp);
+    MFREE(temp);
+
+    CU_ASSERT_EQUAL(result.values[0][0], 1.0);
+    CU_ASSERT_EQUAL(result.values[0][1], 2.0);
+    CU_ASSERT_EQUAL(result.values[1][0], 1.0);
+    CU_ASSERT_EQUAL(result.values[1][1], 2.0);
+}
+
+void test_matrix_transpose2(void) {
+    Matrix temp = seq_matrix_transpose(matrix_c);
+    seq_matrix_replace(&result, temp);
+    MFREE(temp);
+
+    CU_ASSERT_EQUAL(result.rows, 2);
+    CU_ASSERT_EQUAL(result.cols, 1);
+    CU_ASSERT_EQUAL(result.values[0][0], 2.0);
+    CU_ASSERT_EQUAL(result.values[1][0], -1.0);
+}
+
+void test_matrix_ij_minor_matrix1(void) {
+    Matrix temp = seq_matrix_ij_minor_matrix(matrix_a, 0, 0);
+    seq_matrix_replace(&result, temp);
+    MFREE(temp);
+
+    CU_ASSERT_EQUAL(result.values[0][0], 2.0);
+}
+
+void test_matrix_ij_minor_matrix2(void) {
+    Matrix temp = seq_matrix_ij_minor_matrix(matrix_a, 2, 2);
+    seq_matrix_replace(&result, temp);
+    MFREE(temp);
+
+    CU_ASSERT_PTR_NULL(result.values);
 }
 
 void test_matrix_inverse1(void) {
@@ -474,6 +536,22 @@ int main() {
         CU_cleanup_registry();
         return CU_get_error();
     }
+    if (NULL == CU_add_test(mat_prop_Suite, "test 1 of seq_matrix_ij_minor", test_matrix_ij_minor1)) {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+    if (NULL == CU_add_test(mat_prop_Suite, "test 2 of seq_matrix_ij_minor", test_matrix_ij_minor2)) {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+    if (NULL == CU_add_test(mat_prop_Suite, "test 3 of seq_matrix_ij_minor", test_matrix_ij_minor3)) {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+    if (NULL == CU_add_test(mat_prop_Suite, "test 1 of seq_matrix_cofactor", test_matrix_cofactor)) {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
 
     CU_pSuite mat_scal_Suite = NULL;
     mat_scal_Suite = CU_add_suite("seq_matrix_scalars", init_suite_scal, clean_suite_scal);
@@ -525,6 +603,22 @@ int main() {
         return CU_get_error();
     }
     if (NULL == CU_add_test(mat_tran_Suite, "test 3 of seq_matrix_inverse", test_matrix_inverse3)) {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+    if (NULL == CU_add_test(mat_tran_Suite, "test 1 of seq_matrix_transpose", test_matrix_transpose1)) {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+    if (NULL == CU_add_test(mat_tran_Suite, "test 2 of seq_matrix_transpose", test_matrix_transpose2)) {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+    if (NULL == CU_add_test(mat_tran_Suite, "test 1 of seq_matrix_ij_minor_matrix", test_matrix_ij_minor_matrix1)) {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+    if (NULL == CU_add_test(mat_tran_Suite, "test 2 of seq_matrix_ij_minor_matrix", test_matrix_ij_minor_matrix2)) {
         CU_cleanup_registry();
         return CU_get_error();
     }
