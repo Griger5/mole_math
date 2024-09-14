@@ -7,7 +7,7 @@
 4. [The basics](#the-basics)
 
 ## Overview
-**mole_math** is an easy to use and easy to setup matrix-math library written entirely in C. It makes use of OpenMP for additional speed-up by parallelization. CUnit framework is used for unit-testing of all functions. The library was also manually tested with *valgrind* to avoid memory leaks. 
+**mole_math** is a lightweight, easy to use and easy to setup matrix-math library written entirely in C. It makes use of OpenMP for additional speed-up by parallelization. CUnit framework is used for unit-testing of all functions. The library was also manually tested with *valgrind* to avoid memory leaks. 
 
 ## Requirements
 - [GCC](https://gcc.gnu.org/) compiler (with OpenMP)
@@ -27,7 +27,7 @@ or
 ```
 sudo ./setup.sh install
 ```
-The script takes care of compiling all required files into a shared library with *Make*. It also as compiles the tests. **sudo** command is needed, because the script copies the headers and compiled library into */usr/local/include/*, */usr/local/lib/* and */usr/lib/* directories respectively.
+The script takes care of compiling all required files into a shared library with *Make*. It also as compiles the tests. **sudo** command is needed, because the script copies the headers and compiled library into */usr/local/include/* and */usr/local/lib/* directories respectively.
 <br>
 
 To run the tests, enter the *test* directory and execute *run_tests* script:
@@ -129,7 +129,11 @@ int main(void) {
 	                     // pointer is lost, but the pointer was not freed
 
 	matrix_replace(&matrix_c, matrix_a); // memory associated with matrix_c is properly freed
-	                                     // and the contents of matrix_a are safely copied 
+	                                     // and the contents of matrix_a are safely copied
+
+	MFREE(matrix_a);
+	MFREE(matrix_b);
+	MFREE(matrix_c);
 
 	return 0;
 }
