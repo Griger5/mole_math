@@ -1,5 +1,7 @@
 # mole_math
-![Static Badge](https://img.shields.io/badge/Linux-black?style=flat&logo=linux&labelColor=black&color=red)   ![Static Badge](https://img.shields.io/badge/C-black?style=flat&logo=C&labelColor=black&color=blue) ![Static Badge](https://img.shields.io/badge/OpenMP-black?style=flat&logo=C&labelColor=black&color=blue) ![Static Badge](https://img.shields.io/badge/CUnit-black?style=flat&logo=C&labelColor=black&color=blue)
+![Static Badge](https://img.shields.io/badge/Linux-black?style=flat&logo=linux&labelColor=black&color=red)   ![Static Badge](https://img.shields.io/badge/C-black?style=flat&logo=C&labelColor=black&color=blue) ![Static Badge](https://img.shields.io/badge/OpenMP-black?style=flat&logo=C&labelColor=black&color=blue) ![Static Badge](https://img.shields.io/badge/CUnit-black?style=flat&logo=C&labelColor=black&color=blue) 
+
+NOTE: *FULL DOCUMENTAION CAN BE FOUND* [HERE](https://talpasoft.com/mole_math).
 ## Contents:
 1. [Overview](#overview)
 2. [Requirements](#requirements)
