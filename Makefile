@@ -1,9 +1,17 @@
-.PHONY: all clean compile_main compile_seq compile_omp compile_test
+.PHONY: all clean compile_main compile_seq compile_omp compile_cuda compile_test
 
 CC := gcc
 LDLIBS := -lm
 BUILD := ./build
 LIB := ./lib
+CFLAGS := 
+TO_COMPILE = compile_main compile_seq compile_omp
+
+CUDA_ROOT_DIR := /usr/local/cuda
+
+CUDA_LIB_DIR := -L$(CUDA_ROOT_DIR)/lib64
+CUDA_INC_DIR := -I$(CUDA_ROOT_DIR)/include
+CUDA_LINK_LIBS := -lcudart
 
 MAIN := ./src/main
 
@@ -19,10 +27,28 @@ OMP := ./src/openmp
 OMP_SRCS := $(wildcard $(OMP)/*.c)
 OMP_OBJS := $(patsubst $(OMP)/%.c, $(BUILD)/%.o, $(OMP_SRCS))
 
+CUDA := ./src/cuda/host
+CUDA_SRCS := $(wildcard $(CUDA)/*.cu)
+CUDA_OBJS := $(patsubst $(CUDA)/%.cu, $(BUILD)/%.o, $(CUDA_SRCS))
+
+CUDA_KERN := ./src/cuda/device
+CUDA_KERN_SRCS := $(wildcard $(CUDA_KERN)/*.cu)
+CUDA_KERN_OBJS := $(patsubst $(CUDA_KERN)/%.cu, $(BUILD)/%.o, $(CUDA_KERN_SRCS))
+
 TEST := ./test
 
-all: $(LIB) $(BUILD) compile_main compile_seq compile_omp
-	$(CC) -shared -o $(LIB)/libmolemath.so $(MATRIX_OBJS) $(SEQ_OBJS) $(OMP_OBJS) -fopenmp $(LDLIBS)
+OBJS = $(MATRIX_OBJS) $(SEQ_OBJS) $(OMP_OBJS)
+
+ifneq (($shell which nvcc),)
+TO_COMPILE += compile_cuda
+CFLAGS += -DCUDA_AVAILABLE
+OBJS += $(CUDA_OBJS) $(CUDA_KERN_OBJS)
+LDLIBS += $(CUDA_INC_DIR) $(CUDA_LIB_DIR) $(CUDA_LINK_LIBS)
+endif
+
+
+all: $(LIB) $(BUILD) $(TO_COMPILE)
+	$(CC) $(CFLAGS) -shared -o $(LIB)/libmolemath.so $(OBJS) -fopenmp $(LDLIBS)
 
 compile_main:
 	$(MAKE) -C $(MATRIX)
@@ -32,6 +58,10 @@ compile_seq:
 
 compile_omp:
 	$(MAKE) -C $(OMP)
+
+compile_cuda:
+	$(MAKE) -C $(CUDA_KERN)
+	$(MAKE) -C $(CUDA)
 
 compile_test:
 	$(MAKE) -C $(TEST) clean all

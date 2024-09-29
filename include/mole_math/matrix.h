@@ -38,3 +38,5 @@
 #define matrix_copy(MATRIX__matrix_to_copy, ...) matrix_copy(MATRIX__matrix_to_copy, GET_FLAG(__VA_ARGS__))
 #define matrix_replace(MATRIX_PTR__to_replace, MATRIX__matrix_to_copy, ...) matrix_replace(MATRIX_PTR__to_replace, MATRIX__matrix_to_copy, GET_FLAG(__VA_ARGS__))
 #define matrix_array_to_matrix(DOUBLE_PTR__array, SIZE_T__length, ...) matrix_array_to_matrix(DOUBLE_PTR__array, SIZE_T__length, GET_FLAG(__VA_ARGS__)) 
+
+#include <mole_math/cuda_matrix_transform.cuh>
