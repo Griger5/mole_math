@@ -17,7 +17,7 @@ void cuda_matrix_subtract_rows(Matrix *matrix, size_t row_minuend, size_t row_su
 
     if (row_minuend >= rows || row_subtrahend >= rows || row_minuend == row_subtrahend) return;
 
-    float *d_values_minuend, *d_values_subtrahend;
+    double *d_values_minuend, *d_values_subtrahend;
     
     cudaMalloc(&d_values_minuend, row_size_bytes);
     cudaMalloc(&d_values_subtrahend, row_size_bytes);

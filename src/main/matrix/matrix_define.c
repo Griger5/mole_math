@@ -36,10 +36,10 @@ void matrix_free(Matrix *matrix) {
         free(matrix->values);
     }
 
-    /* if (matrix->determinant != NULL) {
-        //free(matrix->determinant);
-        //matrix->determinant = NULL;
-    } */
+    if (matrix->determinant != NULL) {
+        free(matrix->determinant);
+        matrix->determinant = NULL;
+    }
     //matrix->determinant = NULL;
 
     matrix->values = NULL;
