@@ -10,6 +10,13 @@ void cuda_matrix_subtract_rows(Matrix *matrix, size_t row_minuend, size_t row_su
     cudaDeviceGetAttribute(&num_of_SM, cudaDevAttrMultiProcessorCount, deviceId);
 
     const int blocks_per_grid = 4 * num_of_SM;
+
+    const size_t num_of_streams = 2;
+    cudaStream_t streams[num_of_streams];
+
+    for (size_t i = 0; i < num_of_streams; i++) {
+        cudaStreamCreate(&streams[i]);
+    }
     
     size_t rows = matrix->rows;
     size_t cols = matrix->cols;
@@ -22,12 +29,24 @@ void cuda_matrix_subtract_rows(Matrix *matrix, size_t row_minuend, size_t row_su
     cudaMalloc(&d_values_minuend, row_size_bytes);
     cudaMalloc(&d_values_subtrahend, row_size_bytes);
 
-    cudaMemcpy(d_values_minuend, matrix->values[row_minuend], row_size_bytes, cudaMemcpyHostToDevice);
-    cudaMemcpy(d_values_subtrahend, matrix->values[row_subtrahend], row_size_bytes, cudaMemcpyHostToDevice);
+    size_t offset;
 
-    cuda_kernel_matrix_subtract_rows<<<blocks_per_grid, threads_per_block>>>(d_values_minuend, d_values_subtrahend, multiplier, cols);
+    for (size_t i = 0; i < num_of_streams; i++) {
+        offset = (row_size_bytes/num_of_streams) * i;
 
-    cudaMemcpy(matrix->values[row_minuend], d_values_minuend, row_size_bytes, cudaMemcpyDeviceToHost);
+        cudaMemcpyAsync(d_values_minuend + offset, matrix->values[row_minuend] + offset, row_size_bytes/num_of_streams, cudaMemcpyHostToDevice);
+        cudaMemcpyAsync(d_values_subtrahend + offset, matrix->values[row_subtrahend] + offset, row_size_bytes/num_of_streams, cudaMemcpyHostToDevice);
+
+        cuda_kernel_matrix_subtract_rows<<<blocks_per_grid/num_of_streams, threads_per_block, 0, streams[i]>>>(d_values_minuend + offset, d_values_subtrahend + offset, multiplier, cols);
+
+        cudaMemcpyAsync(matrix->values[row_minuend] + offset, d_values_minuend + offset, row_size_bytes/num_of_streams, cudaMemcpyDeviceToHost);
+    }
+
+    cudaDeviceSynchronize();
+
+    for (size_t i = 0; i < num_of_streams; i++) {
+        cudaStreamDestroy(streams[i]);
+    }
 
     cudaFree(d_values_minuend);
     cudaFree(d_values_subtrahend);

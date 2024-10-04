@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 #include "cuda_kernel_matrix_transform.cuh"
 
 #include "../../../include/mole_math/macros.h"
