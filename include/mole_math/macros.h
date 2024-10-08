@@ -6,3 +6,5 @@
 
 #define GLOBAL_IDX_X() threadIdx.x + blockIdx.x * blockDim.x
 #define GLOBAL_STRIDE_X() gridDim.x * blockDim.x
+
+#define GLOBAL_IDX_Y() threadIdx.y + blockIdx.y * blockDim.y

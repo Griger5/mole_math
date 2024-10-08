@@ -3,6 +3,10 @@
 
 #include <stddef.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct _Matrix {
     double **values;
     struct {
@@ -25,5 +29,9 @@ double matrix_get_determinant(const Matrix matrix);
 void matrix_reset_properties(Matrix *matrix);
 
 #define MFREE(MATRIX__matrix) matrix_free(&MATRIX__matrix)
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
