@@ -1,7 +1,8 @@
 #include <math.h>
 
 #include "../../include/mole_math/omp_matrix_operations.h"
-#include "../../include/mole_math/omp_matrix_utils.h"
+#include "../../include/mole_math/seq_matrix_utils.h"
+
 
 Matrix omp_matrix_multiply(const Matrix matrix_a, const Matrix matrix_b) {
     size_t rows_a = matrix_a.rows;
@@ -11,7 +12,7 @@ Matrix omp_matrix_multiply(const Matrix matrix_a, const Matrix matrix_b) {
     Matrix result;
     
     if (matrix_a.cols != matrix_b.rows) {
-        result = omp_matrix_nulled(rows_a, cols_b);
+        result = seq_matrix_nulled(rows_a, cols_b);
 
         return result;
     }
@@ -47,7 +48,7 @@ Matrix omp_matrix_subtract_elements(const Matrix matrix_a, const Matrix matrix_b
     Matrix result;
     
     if (matrix_a.rows != matrix_b.rows || matrix_a.cols != matrix_b.cols) {
-        result = omp_matrix_nulled(rows, cols);
+        result = seq_matrix_nulled(rows, cols);
 
         return result;
     }
@@ -75,7 +76,7 @@ Matrix omp_matrix_multiply_elements(const Matrix matrix_a, const Matrix matrix_b
     Matrix result;
 
     if (matrix_a.rows != matrix_b.rows || matrix_a.cols != matrix_b.cols) {
-        result = omp_matrix_nulled(rows, cols);
+        result = seq_matrix_nulled(rows, cols);
 
         return result;
     }

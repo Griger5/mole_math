@@ -5,21 +5,8 @@
 #include "../../../include/mole_math/seq_matrix_transform.h"
 #include "../../../include/mole_math/omp_matrix_transform.h"
 
-void matrix_switch_rows(Matrix *matrix, size_t row_1, size_t row_2, char flag) {
-    size_t problem_size = matrix->cols;
-    
-    switch (flag) {
-        case 'o':
-            omp_matrix_switch_rows(matrix, row_1, row_2);
-            break;
-        case 's':
-            seq_matrix_switch_rows(matrix, row_1, row_2);
-            break;
-        default:
-            if ((double)problem_size/omp_get_num_procs() >= 2000/16.0) omp_matrix_switch_rows(matrix, row_1, row_2);
-            else seq_matrix_switch_rows(matrix, row_1, row_2);
-            break;
-    }
+void matrix_switch_rows(Matrix *matrix, size_t row_1, size_t row_2) {
+    seq_matrix_switch_rows(matrix, row_1, row_2);
 }
 
 void matrix_subtract_rows(Matrix *matrix, size_t row_minuend, size_t row_subtrahend, double multiplier, char flag) {

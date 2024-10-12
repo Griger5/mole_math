@@ -3,7 +3,8 @@
 
 #include "../../include/mole_math/omp_matrix_properties.h"
 #include "../../include/mole_math/omp_matrix_transform.h"
-#include "../../include/mole_math/omp_matrix_utils.h"
+#include "../../include/mole_math/seq_matrix_transform.h"
+#include "../../include/mole_math/seq_matrix_utils.h"
 
 double omp_matrix_determinant(Matrix matrix) {   
     if (matrix.rows != matrix.cols) return NAN;
@@ -41,7 +42,7 @@ double omp_matrix_determinant(Matrix matrix) {
         return determinant;
     }
 
-    Matrix matrix_copied = omp_matrix_copy(matrix);
+    Matrix matrix_copied = seq_matrix_copy(matrix);
 
     double ratio;
     double sign = 1;
@@ -49,7 +50,7 @@ double omp_matrix_determinant(Matrix matrix) {
     if (matrix_copied.values[0][0] == 0) {
         for (size_t i = 1; i < N; i++) {
             if (matrix_copied.values[i][i] != 0) {
-                omp_matrix_switch_rows(&matrix_copied, 0, i);
+                seq_matrix_switch_rows(&matrix_copied, 0, i);
                 sign *= -1;
                 break;
             }       
@@ -103,7 +104,7 @@ Matrix omp_matrix_cofactor(const Matrix matrix) {
     size_t rows = matrix.rows;
     size_t cols = matrix.cols;
 
-    if (matrix.values == NULL) return omp_matrix_nulled(rows, cols);
+    if (matrix.values == NULL) return seq_matrix_nulled(rows, cols);
 
     Matrix cofactor_matrix = matrix_init(rows, cols);
     int sign;

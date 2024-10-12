@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 #include <math.h>
 
 #include "../../include/mole_math/seq_matrix_utils.h"
@@ -64,14 +65,17 @@ Matrix seq_matrix_copy(const Matrix matrix_to_copy) {
     else copy = matrix_init(rows, cols);
     
     if (copy.values != NULL) {
-        if (matrix_to_copy.values == NULL) copy.values = NULL;
+        /* if (matrix_to_copy.values == NULL) copy.values = NULL;
         else {
             for (size_t i = 0; i < rows; i++) {
                 for (size_t j = 0; j < cols; j++) {
                     copy.values[i][j] = matrix_to_copy.values[i][j];
                 }
             }
-        }
+        } */
+        size_t matrix_size_bytes = rows * cols * sizeof(double);
+
+        memcpy(copy.values[0], matrix_to_copy.values[0], matrix_size_bytes);
     }
 
     if (matrix_to_copy.determinant != NULL) {

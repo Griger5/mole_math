@@ -4,6 +4,7 @@
 #include "../../include/mole_math/omp_matrix_properties.h"
 #include "../../include/mole_math/omp_matrix_scalars.h"
 #include "../../include/mole_math/omp_matrix_utils.h"
+#include "../../include/mole_math/seq_matrix_utils.h"
 
 void omp_matrix_subtract_rows(Matrix *matrix, size_t row_minuend, size_t row_subtrahend, double multiplier) {
     size_t cols = matrix->cols;
@@ -16,31 +17,13 @@ void omp_matrix_subtract_rows(Matrix *matrix, size_t row_minuend, size_t row_sub
     }
 }
 
-void omp_matrix_switch_rows(Matrix *matrix, size_t row_1, size_t row_2) {
-    size_t cols = matrix->cols;
-    double temp;
-
-    if (row_1 < matrix->rows && row_2 < matrix->rows) {
-        #pragma omp parallel for private(temp)
-        for (size_t i = 0; i < cols; i++) {
-            temp = matrix->values[row_1][i];
-            matrix->values[row_1][i] = matrix->values[row_2][i];
-            matrix->values[row_2][i] = temp;        
-        }
-    }
-
-    if (matrix->determinant != NULL) {
-        if (!isinf(*matrix->determinant)) *matrix->determinant *= -1;
-    }
-}
-
 Matrix omp_matrix_transpose(const Matrix matrix) {
     size_t rows = matrix.rows;
     size_t cols = matrix.cols;
     Matrix transposed;
     size_t j;
 
-    if (matrix.values == NULL) return omp_matrix_nulled(rows, cols);
+    if (matrix.values == NULL) return seq_matrix_nulled(rows, cols);
 
     if (rows == cols) {
         transposed = matrix_init(rows, cols);
@@ -74,8 +57,8 @@ Matrix omp_matrix_ij_minor_matrix(const Matrix matrix, size_t i_row, size_t j_co
     size_t rows = matrix.rows;
     size_t cols = matrix.cols;
 
-    if (i_row+1 <= 0 || j_col+1 <= 0) return omp_matrix_nulled(rows-1, cols-1);
-    if (rows != cols || (i_row >= rows || j_col >= cols)) return omp_matrix_nulled(rows-1, cols-1);
+    if (i_row+1 <= 0 || j_col+1 <= 0) return seq_matrix_nulled(rows-1, cols-1);
+    if (rows != cols || (i_row >= rows || j_col >= cols)) return seq_matrix_nulled(rows-1, cols-1);
 
     Matrix minor_matrix = matrix_init(rows-1, cols-1);
 
@@ -116,7 +99,7 @@ Matrix omp_matrix_ij_minor_matrix(const Matrix matrix, size_t i_row, size_t j_co
 }
 
 Matrix omp_matrix_inverse(Matrix matrix) {
-    Matrix nulled = omp_matrix_nulled(matrix.rows, matrix.cols);
+    Matrix nulled = seq_matrix_nulled(matrix.rows, matrix.cols);
     
     if (matrix.rows != matrix.cols) return nulled;
 
@@ -127,7 +110,7 @@ Matrix omp_matrix_inverse(Matrix matrix) {
     size_t N = matrix.rows;
     Matrix inverted = omp_matrix_identity(N);
 
-    Matrix matrix_copied = omp_matrix_copy(matrix);
+    Matrix matrix_copied = seq_matrix_copy(matrix);
 
     double ratio;
 

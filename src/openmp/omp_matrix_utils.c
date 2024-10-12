@@ -2,6 +2,7 @@
 #include <math.h>
 
 #include "../../include/mole_math/omp_matrix_utils.h"
+#include "../../include/mole_math/seq_matrix_utils.h"
 
 Matrix omp_matrix_identity(size_t N) {
     Matrix identity = matrix_init(N, N);
@@ -14,18 +15,6 @@ Matrix omp_matrix_identity(size_t N) {
     }           
 
     return identity;
-}
-
-Matrix omp_matrix_nulled(size_t rows, size_t cols) {
-    Matrix matrix;
-    
-    matrix.rows = rows;
-    matrix.cols = cols;
-
-    matrix.values = NULL;
-    matrix.determinant = NULL;
-
-    return matrix;
 }
 
 Matrix omp_matrix_random(size_t rows, size_t cols) {
@@ -62,34 +51,10 @@ Matrix omp_matrix_init_integers(size_t rows, size_t cols) {
     return int_mat;
 }
 
-Matrix omp_matrix_copy(const Matrix matrix_to_copy) {
-    size_t rows = matrix_to_copy.rows;
-    size_t cols = matrix_to_copy.cols;
-
-    Matrix copy;
-    if (matrix_to_copy.values == NULL) copy = omp_matrix_nulled(rows, cols);
-    else copy = matrix_init(rows, cols);
-    
-    if (copy.values != NULL) {
-        if (matrix_to_copy.values == NULL) copy.values = NULL;
-        else {
-            size_t j;
-            #pragma omp parallel for private(j)
-            for (size_t i = 0; i < rows; i++) {
-                for (j = 0; j < cols; j++) {
-                    copy.values[i][j] = matrix_to_copy.values[i][j];
-                }
-            }
-        }
-    }
-
-    return copy;
-}
-
 void omp_matrix_replace(Matrix *to_replace, const Matrix to_copy) {
     matrix_free(to_replace);
 
-    *to_replace = omp_matrix_copy(to_copy);
+    *to_replace = seq_matrix_copy(to_copy);
 }
 
 Matrix omp_matrix_array_to_matrix(double *array, size_t length) {

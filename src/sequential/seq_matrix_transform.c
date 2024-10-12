@@ -1,4 +1,6 @@
 #include <math.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "../../include/mole_math/seq_matrix_transform.h"
 #include "../../include/mole_math/seq_matrix_properties.h"
@@ -14,16 +16,19 @@ void seq_matrix_subtract_rows(Matrix *matrix, size_t row_minuend, size_t row_sub
 }
 
 void seq_matrix_switch_rows(Matrix *matrix, size_t row_1, size_t row_2) {
+    size_t rows = matrix->rows;
     size_t cols = matrix->cols;
-    double temp;
+    size_t row_size_bytes = cols * sizeof(double);
 
-    if (row_1 < matrix->rows && row_2 < matrix->rows) {
-        for (size_t i = 0; i < cols; i++) {
-            temp = matrix->values[row_1][i];
-            matrix->values[row_1][i] = matrix->values[row_2][i];
-            matrix->values[row_2][i] = temp;        
-        }
-    }
+    if (row_1 >= rows || row_2 >= rows) return;
+
+    double *temp = malloc(row_size_bytes);
+
+    memcpy(temp, matrix->values[row_1], row_size_bytes);
+    memcpy(matrix->values[row_1], matrix->values[row_2], row_size_bytes);
+    memcpy(matrix->values[row_2], temp, row_size_bytes);
+
+    free(temp);
 
     if (matrix->determinant != NULL) {
         if (!isinf(*matrix->determinant)) *matrix->determinant *= -1;

@@ -12,7 +12,7 @@ Matrix matrix_nulled(size_t rows, size_t cols);
 
 Matrix matrix_random(size_t rows, size_t cols, char flag);
 
-Matrix matrix_copy(const Matrix matrix_to_copy, char flag);
+Matrix matrix_copy(const Matrix matrix_to_copy);
 
 Matrix matrix_init_integers(size_t rows, size_t cols, char flag);
 

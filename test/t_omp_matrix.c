@@ -284,24 +284,6 @@ void test_matrix_subtract_rows2(void) {
     CU_ASSERT_EQUAL(matrix_b.values[1][1], 5.0);
 }
 
-void test_matrix_switch_rows1(void) {
-    omp_matrix_switch_rows(&matrix_b, 2, 1);
-
-    CU_ASSERT_EQUAL(matrix_b.values[0][0], -3.0);
-    CU_ASSERT_EQUAL(matrix_b.values[0][1], -7.0);
-    CU_ASSERT_EQUAL(matrix_b.values[1][0], 2.0);
-    CU_ASSERT_EQUAL(matrix_b.values[1][1], 5.0);
-}
-
-void test_matrix_switch_rows2(void) {
-    omp_matrix_switch_rows(&matrix_b, 0, 1);
-
-    CU_ASSERT_EQUAL(matrix_b.values[0][0], 2.0);
-    CU_ASSERT_EQUAL(matrix_b.values[0][1], 5.0);
-    CU_ASSERT_EQUAL(matrix_b.values[1][0], -3.0);
-    CU_ASSERT_EQUAL(matrix_b.values[1][1], -7.0);
-}
-
 void test_matrix_transpose1(void) {
     Matrix temp = omp_matrix_transpose(matrix_a);
     seq_matrix_replace(&result, temp);
@@ -353,10 +335,10 @@ void test_matrix_inverse2(void) {
     seq_matrix_replace(&result, temp);
     MFREE(temp);
 
-    CU_ASSERT_EQUAL(result.values[0][0], -7.0);
-    CU_ASSERT_EQUAL(result.values[0][1], -5.0);
-    CU_ASSERT_EQUAL(result.values[1][0], 3.0);
-    CU_ASSERT_EQUAL(result.values[1][1], 2.0);
+    CU_ASSERT_DOUBLE_EQUAL(result.values[0][0], -5.0, 0.00001);
+    CU_ASSERT_DOUBLE_EQUAL(result.values[0][1], -7.0, 0.00001);
+    CU_ASSERT_DOUBLE_EQUAL(result.values[1][0], 2.0, 0.00001);
+    CU_ASSERT_DOUBLE_EQUAL(result.values[1][1], 3.0, 0.00001);
 }
 
 void test_matrix_inverse3(void) {
@@ -394,12 +376,6 @@ void test_matrix_identity(void) {
     }
 }
 
-void test_matrix_nulled(void) {
-    seq_matrix_replace(&matrix_b, omp_matrix_nulled(3,3));
-
-    CU_ASSERT_PTR_NULL(matrix_b.values);
-}
-
 void test_matrix_init_integers(void) {
     Matrix temp = omp_matrix_init_integers(2,2);
     seq_matrix_replace(&matrix_b, temp);
@@ -411,18 +387,6 @@ void test_matrix_init_integers(void) {
     CU_ASSERT_EQUAL(matrix_b.values[0][1], 2.0);
     CU_ASSERT_EQUAL(matrix_b.values[1][0], 3.0);
     CU_ASSERT_EQUAL(matrix_b.values[1][1], 4.0);
-}
-
-void test_matrix_copy(void) {
-    Matrix temp = omp_matrix_copy(matrix_a);
-    seq_matrix_replace(&matrix_b, temp);
-    MFREE(temp);
-
-    CU_ASSERT_EQUAL(matrix_b.rows, 1);
-    CU_ASSERT_EQUAL(matrix_b.cols, 3)
-    CU_ASSERT_EQUAL(matrix_b.values[0][0], 1.0);
-    CU_ASSERT_EQUAL(matrix_b.values[0][1], 2.0);
-    CU_ASSERT_EQUAL(matrix_b.values[0][2], 3.0);
 }
 
 void test_matrix_replace(void) {
@@ -580,14 +544,6 @@ int main() {
         CU_cleanup_registry();
         return CU_get_error();
     }
-    if (NULL == CU_add_test(mat_tran_Suite, "test 1 of omp_matrix_switch_rows", test_matrix_switch_rows1)) {
-        CU_cleanup_registry();
-        return CU_get_error();
-    }
-    if (NULL == CU_add_test(mat_tran_Suite, "test 2 of omp_matrix_switch_rows", test_matrix_switch_rows2)) {
-        CU_cleanup_registry();
-        return CU_get_error();
-    }
     if (NULL == CU_add_test(mat_tran_Suite, "test 1 of omp_matrix_inverse", test_matrix_inverse1)) {
         CU_cleanup_registry();
         return CU_get_error();
@@ -629,15 +585,7 @@ int main() {
         CU_cleanup_registry();
         return CU_get_error();
     }
-    if (NULL == CU_add_test(mat_util_Suite, "test 1 of omp_matrix_nulled", test_matrix_nulled)) {
-        CU_cleanup_registry();
-        return CU_get_error();
-    }
     if (NULL == CU_add_test(mat_util_Suite, "test 1 of omp_matrix_init_integers", test_matrix_init_integers)) {
-        CU_cleanup_registry();
-        return CU_get_error();
-    }
-    if (NULL == CU_add_test(mat_util_Suite, "test 1 of omp_matrix_copy", test_matrix_copy)) {
         CU_cleanup_registry();
         return CU_get_error();
     }

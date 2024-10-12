@@ -82,25 +82,8 @@ Matrix matrix_init_integers(size_t rows, size_t cols, char flag) {
     return result;
 }
 
-Matrix matrix_copy(const Matrix matrix_to_copy, char flag) {
-    size_t problem_size = matrix_to_copy.rows * matrix_to_copy.cols;
-
-    Matrix result;
-    
-    switch (flag) {
-        case 'o':
-            result = omp_matrix_copy(matrix_to_copy);
-            break;
-        case 's':
-            result = seq_matrix_copy(matrix_to_copy);
-            break;
-        default:
-            if ((double)problem_size/omp_get_num_procs() >= 4096/16.0) result = omp_matrix_copy(matrix_to_copy);
-            else result = seq_matrix_copy(matrix_to_copy);
-            break;
-    }
-
-    return result;
+Matrix matrix_copy(const Matrix matrix_to_copy) {
+    return seq_matrix_copy(matrix_to_copy);
 }
 
 void matrix_replace(Matrix *to_replace, const Matrix matrix_to_copy, char flag) {
