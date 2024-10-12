@@ -10,6 +10,10 @@ extern "C" {
 
 Matrix cuda_matrix_multiply(const Matrix matrix_a, const Matrix matrix_b);
 
+Matrix cuda_matrix_subtract_elements(const Matrix matrix_a, const Matrix matrix_b);
+
+Matrix cuda_matrix_multiply_elements(const Matrix matrix_a, const Matrix matrix_b);
+
 #ifdef __cplusplus
 }
 #endif
