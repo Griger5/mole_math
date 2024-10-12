@@ -103,23 +103,6 @@ void matrix_replace(Matrix *to_replace, const Matrix matrix_to_copy, char flag) 
     }
 }
 
-Matrix matrix_array_to_matrix(double *array, size_t length, char flag) {
-    size_t problem_size = length;
-
-    Matrix result;
-    
-    switch (flag) {
-        case 'o':
-            result = omp_matrix_array_to_matrix(array, length);
-            break;
-        case 's':
-            result = seq_matrix_array_to_matrix(array, length);
-            break;
-        default:
-            if ((double)problem_size/omp_get_num_procs() >= 5000/16.0) result = omp_matrix_array_to_matrix(array, length);
-            else result = seq_matrix_array_to_matrix(array, length);
-            break;
-    }
-
-    return result;
+Matrix matrix_array_to_matrix(double *array, size_t length) {
+    return seq_matrix_array_to_matrix(array, length);
 }

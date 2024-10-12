@@ -18,6 +18,6 @@ Matrix matrix_init_integers(size_t rows, size_t cols, char flag);
 
 void matrix_replace(Matrix *to_replace, const Matrix matrix_to_copy, char flag);
 
-Matrix matrix_array_to_matrix(double *array, size_t length, char flag);
+Matrix matrix_array_to_matrix(double *array, size_t length);
 
 #endif
