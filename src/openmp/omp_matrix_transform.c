@@ -50,6 +50,10 @@ Matrix omp_matrix_transpose(const Matrix matrix) {
         }
     }
 
+    if (matrix.determinant != NULL) {
+        if (!isinf(*matrix.determinant)) *transposed.determinant = *matrix.determinant;
+    }
+
     return transposed;
 }
 
