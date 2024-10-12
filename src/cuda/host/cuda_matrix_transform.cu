@@ -4,6 +4,8 @@
 
 #include "../../../include/mole_math/cuda_check_error.cuh"
 
+#include "../../../include/mole_math/seq_matrix_utils.h"
+
 void cuda_matrix_subtract_rows(Matrix *matrix, size_t row_minuend, size_t row_subtrahend, double multiplier) {
     int deviceId;
     int num_of_SM;
@@ -34,4 +36,55 @@ void cuda_matrix_subtract_rows(Matrix *matrix, size_t row_minuend, size_t row_su
 
     cudaFree(d_values_minuend);
     cudaFree(d_values_subtrahend);
+}
+
+Matrix cuda_matrix_transpose(const Matrix matrix) {
+    size_t rows = matrix.rows;
+    size_t cols = matrix.cols;
+    size_t matrix_size_bytes = rows * cols * sizeof(double);
+
+    Matrix transposed;
+
+    if (matrix.values == NULL) return seq_matrix_nulled(rows, cols);
+
+    double *d_matrix_values;
+    double *d_transposed_values;
+
+    checkCuda( cudaMalloc(&d_matrix_values, matrix_size_bytes) );
+    checkCuda( cudaMalloc(&d_transposed_values, matrix_size_bytes) );
+
+    cudaMemcpy(d_matrix_values, matrix.values[0], matrix_size_bytes, cudaMemcpyHostToDevice);
+
+    dim3 block(block_size, block_size);
+    dim3 grid((cols+block.x-1)/block.x, (rows+block.y-1)/block.y);
+
+    if (rows == cols) {
+        transposed = matrix_init(rows, cols);
+    
+        if (transposed.values != NULL) {
+            cuda_kernel_matrix_transpose<<<grid, block>>>(d_matrix_values, d_transposed_values, rows, cols);
+        }
+    }
+    else {
+        transposed = matrix_init(cols, rows);
+        
+        if (transposed.values != NULL) {
+            cuda_kernel_matrix_transpose_flip<<<grid, block>>>(d_matrix_values, d_transposed_values, rows, cols);
+        }
+    }
+
+    checkCuda( cudaDeviceSynchronize() );
+
+    checkCuda( cudaGetLastError() );
+
+    checkCuda( cudaMemcpy(transposed.values[0], d_transposed_values, matrix_size_bytes, cudaMemcpyDeviceToHost) );
+
+    if (matrix.determinant != NULL) {
+        if (!isinf(*matrix.determinant)) *transposed.determinant = *matrix.determinant;
+    }
+
+    cudaFree(d_matrix_values);
+    cudaFree(d_transposed_values);
+
+    return transposed;
 }

@@ -10,6 +10,8 @@ extern "C" {
 
 void cuda_matrix_subtract_rows(Matrix *matrix, size_t row_minuend, size_t row_subtrahend, double multiplier);
 
+Matrix cuda_matrix_transpose(const Matrix matrix);
+
 #ifdef __cplusplus
 }
 #endif
