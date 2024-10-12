@@ -402,23 +402,6 @@ void test_matrix_replace(void) {
     CU_ASSERT_EQUAL(matrix_b.values[1][1], 0.0);
 }
 
-void test_matrix_array_to_matrix(void) {
-    double array[3];
-    array[0] = 1.0;
-    array[1] = 2.0;
-    array[2] = 3.0;
-
-    Matrix temp = omp_matrix_array_to_matrix(array, 3);
-    seq_matrix_replace(&matrix_b, temp);
-    MFREE(temp);
-
-    CU_ASSERT_EQUAL(matrix_b.rows, 1);
-    CU_ASSERT_EQUAL(matrix_b.cols, 3)
-    CU_ASSERT_EQUAL(matrix_b.values[0][0], 1.0);
-    CU_ASSERT_EQUAL(matrix_b.values[0][1], 2.0);
-    CU_ASSERT_EQUAL(matrix_b.values[0][2], 3.0);
-}
-
 int main() {
     omp_set_num_threads(16*omp_get_num_procs());
 
@@ -590,10 +573,6 @@ int main() {
         return CU_get_error();
     }
     if (NULL == CU_add_test(mat_util_Suite, "test 1 of omp_matrix_replace", test_matrix_replace)) {
-        CU_cleanup_registry();
-        return CU_get_error();
-    }
-    if (NULL == CU_add_test(mat_util_Suite, "test 1 of omp_matrix_array_to_matrix", test_matrix_array_to_matrix)) {
         CU_cleanup_registry();
         return CU_get_error();
     }

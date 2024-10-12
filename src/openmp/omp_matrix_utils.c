@@ -56,16 +56,3 @@ void omp_matrix_replace(Matrix *to_replace, const Matrix to_copy) {
 
     *to_replace = seq_matrix_copy(to_copy);
 }
-
-Matrix omp_matrix_array_to_matrix(double *array, size_t length) {
-    Matrix matrix = matrix_init(1, length);
-
-    if (matrix.values != NULL) {
-        #pragma omp parallel for
-        for (size_t i = 0; i < length; i++) {
-            matrix.values[0][i] = array[i];
-        }
-    }
-    
-    return matrix;
-}

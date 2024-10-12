@@ -47,9 +47,7 @@ __global__ void cuda_kernel_matrix_subtract_elements(double *matrix_a_values, do
     size_t index = GLOBAL_IDX_X();
     size_t stride = GLOBAL_STRIDE_X();
     
-    //if (index_y < rows && index_x < cols) {
     for (size_t i = index; i < rows*cols; i += stride) {
-        //result[index_y * cols + index_x] = matrix_a_values[index_y * cols + index_x] - matrix_b_values[index_y * cols + index_x];
         result[i] = matrix_a_values[i] - matrix_b_values[i]; 
     }
 }
@@ -58,9 +56,7 @@ __global__ void cuda_kernel_matrix_multiply_elements(double *matrix_a_values, do
     size_t index = GLOBAL_IDX_X();
     size_t stride = GLOBAL_STRIDE_X();
     
-    //if (index_y < rows && index_x < cols) {
     for (size_t i = index; i < rows*cols; i += stride) {
-        //result[index_y * cols + index_x] = matrix_a_values[index_y * cols + index_x] - matrix_b_values[index_y * cols + index_x];
         result[i] = matrix_a_values[i] * matrix_b_values[i]; 
     }
 }
