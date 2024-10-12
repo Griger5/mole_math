@@ -50,9 +50,3 @@ Matrix omp_matrix_init_integers(size_t rows, size_t cols) {
 
     return int_mat;
 }
-
-void omp_matrix_replace(Matrix *to_replace, const Matrix to_copy) {
-    matrix_free(to_replace);
-
-    *to_replace = seq_matrix_copy(to_copy);
-}
