@@ -2,6 +2,8 @@
 
 #include "../../../include/mole_math/macros.h"
 
+const int threads_per_block = 512;
+
 __global__ void cuda_kernel_matrix_determinant_check(double *matrix_values, int *is_zero, size_t i, size_t N) {
     if (matrix_values[i + i*N] == 0) {
         *is_zero = 1;

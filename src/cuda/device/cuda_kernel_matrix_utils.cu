@@ -4,6 +4,8 @@
 
 #include "../../../include/mole_math/macros.h"
 
+const int threads_per_block = 512;
+
 __global__ void cuda_kernel_matrix_identity(double *result, size_t N) {
     size_t index = GLOBAL_IDX_X();
     size_t stride = GLOBAL_STRIDE_X();

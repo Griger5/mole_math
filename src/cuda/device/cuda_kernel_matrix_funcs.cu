@@ -2,6 +2,8 @@
 
 #include "../../../include/mole_math/macros.h"
 
+const int threads_per_block = 512;
+
 __global__ void cuda_kernel_matrix_sum_row(double *row_values, size_t cols, double *result) {
     extern __shared__ double shared_values[];
     int local_id = threadIdx.x;
