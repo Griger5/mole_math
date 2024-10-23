@@ -4,6 +4,8 @@
 
 #include "../../../include/mole_math/cuda_check_error.cuh"
 
+const int threads_per_block = 512;
+
 Matrix cuda_matrix_identity(size_t N) {
     Matrix identity = matrix_init(N, N);
 

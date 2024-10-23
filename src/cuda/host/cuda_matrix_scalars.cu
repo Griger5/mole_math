@@ -4,6 +4,8 @@
 
 #include "../../../include/mole_math/cuda_check_error.cuh"
 
+const int threads_per_block = 512;
+
 void cuda_matrix_subtract_scalar(Matrix *matrix, double scalar) {
     if (matrix->values == NULL) return;
     

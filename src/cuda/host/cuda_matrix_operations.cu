@@ -6,6 +6,9 @@
 
 #include "../../../include/mole_math/seq_matrix_utils.h"
 
+const int threads_per_block = 512;
+const int block_size = 32;
+
 Matrix cuda_matrix_multiply(const Matrix matrix_a, const Matrix matrix_b) {
     size_t rows_a = matrix_a.rows;
     size_t cols_a = matrix_a.cols;

@@ -6,6 +6,9 @@
 
 #include "../../../include/mole_math/seq_matrix_utils.h"
 
+const int threads_per_block = 512;
+const int block_size = 32;
+
 void cuda_matrix_subtract_rows(Matrix *matrix, size_t row_minuend, size_t row_subtrahend, double multiplier) {
     int deviceId;
     int num_of_SM;

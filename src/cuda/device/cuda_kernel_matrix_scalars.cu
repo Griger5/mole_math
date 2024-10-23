@@ -2,8 +2,6 @@
 
 #include "../../../include/mole_math/macros.h"
 
-const int threads_per_block = 512;
-
 __global__ void cuda_kernel_matrix_subtract_scalar(double *matrix_values, double scalar, size_t size) {
     size_t index = GLOBAL_IDX_X();
     size_t stride = GLOBAL_STRIDE_X();

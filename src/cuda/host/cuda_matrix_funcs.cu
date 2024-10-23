@@ -4,6 +4,8 @@
 
 #include "../../../include/mole_math/cuda_check_error.cuh"
 
+const int threads_per_block = 512;
+
 double cuda_matrix_sum_row(const Matrix matrix, size_t row) {
     int deviceId;
     int num_of_SM;

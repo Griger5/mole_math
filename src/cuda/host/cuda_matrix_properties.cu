@@ -7,6 +7,8 @@
 #include "../../../include/mole_math/seq_matrix_transform.h"
 #include "../../../include/mole_math/seq_matrix_utils.h"
 
+const int threads_per_block = 512;
+
 double cuda_matrix_determinant(Matrix matrix) {
     if (matrix.rows != matrix.cols) return NAN;
 
