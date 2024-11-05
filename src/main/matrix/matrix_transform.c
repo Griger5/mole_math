@@ -4,6 +4,7 @@
 
 #include "../../../include/mole_math/seq_matrix_transform.h"
 #include "../../../include/mole_math/omp_matrix_transform.h"
+#include "../../../include/mole_math/cuda_matrix_transform.cuh"
 
 void matrix_switch_rows(Matrix *matrix, size_t row_1, size_t row_2) {
     seq_matrix_switch_rows(matrix, row_1, row_2);
@@ -19,6 +20,11 @@ void matrix_subtract_rows(Matrix *matrix, size_t row_minuend, size_t row_subtrah
         case 's':
             seq_matrix_subtract_rows(matrix, row_minuend, row_subtrahend, multiplier);
             break;
+        #ifdef CUDA_SM_COUNT
+        case 'c':
+            cuda_matrix_subtract_rows(matrix, row_minuend, row_subtrahend, multiplier);
+            break;
+        #endif
         default:
             if ((double)problem_size/omp_get_num_procs() >= 2000/16.0) omp_matrix_subtract_rows(matrix, row_minuend, row_subtrahend, multiplier);
             else seq_matrix_subtract_rows(matrix, row_minuend, row_subtrahend, multiplier);
@@ -38,6 +44,11 @@ Matrix matrix_transpose(const Matrix matrix, char flag) {
         case 's':
             result = seq_matrix_transpose(matrix);
             break;
+        #ifdef CUDA_SM_COUNT
+        case 'c':
+            result = cuda_matrix_transpose(matrix);
+            break;
+        #endif
         default:
             if ((double)problem_size/omp_get_num_procs() >= 16384/16.0) result = omp_matrix_transpose(matrix);
             else result = seq_matrix_transpose(matrix);

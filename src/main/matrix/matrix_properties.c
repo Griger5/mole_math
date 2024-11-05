@@ -1,14 +1,18 @@
 #include <omp.h>
+#include <math.h>
 
 #include "../../../include/mole_math/matrix_properties.h"
 
 #include "../../../include/mole_math/seq_matrix_properties.h"
 #include "../../../include/mole_math/omp_matrix_properties.h"
+#include "../../../include/mole_math/cuda_matrix_properties.cuh"
 
 double matrix_determinant(Matrix matrix, char flag) {
     size_t problem_size = matrix.rows * matrix.cols;
 
     double result;
+    
+    if (!isinf(*matrix.determinant)) return *matrix.determinant;
     
     switch (flag) {
         case 'o':
@@ -17,6 +21,11 @@ double matrix_determinant(Matrix matrix, char flag) {
         case 's':
             result = seq_matrix_determinant(matrix);
             break;
+        #ifdef CUDA_SM_COUNT
+        case 'c':
+            result = cuda_matrix_determinant(matrix);
+            break;
+        #endif
         default:
             if ((double)problem_size/omp_get_num_procs() >= 6400/16.0) result = omp_matrix_determinant(matrix);
             else result = seq_matrix_determinant(matrix);

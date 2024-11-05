@@ -39,13 +39,11 @@ TEST := ./test
 
 OBJS = $(MATRIX_OBJS) $(SEQ_OBJS) $(OMP_OBJS)
 
-ifneq (($shell which nvcc),)
+ifneq ($(shell which nvcc),)
 TO_COMPILE += compile_cuda
-CFLAGS += -DCUDA_AVAILABLE
 OBJS += $(CUDA_OBJS) $(CUDA_KERN_OBJS)
 LDLIBS += $(CUDA_INC_DIR) $(CUDA_LIB_DIR) $(CUDA_LINK_LIBS)
 endif
-
 
 all: $(LIB) $(BUILD) $(TO_COMPILE)
 	$(CC) $(CFLAGS) -shared -o $(LIB)/libmolemath.so $(OBJS) -fopenmp $(LDLIBS)

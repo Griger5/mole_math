@@ -5,6 +5,7 @@
 
 #include "../../../include/mole_math/seq_matrix_utils.h"
 #include "../../../include/mole_math/omp_matrix_utils.h"
+#include "../../../include/mole_math/cuda_matrix_utils.cuh"
 
 void matrix_print(const Matrix matrix) {
     size_t rows = matrix.rows;
@@ -30,6 +31,11 @@ Matrix matrix_identity(size_t N, char flag) {
         case 's':
             result = seq_matrix_identity(N);
             break;
+        #ifdef CUDA_SM_COUNT
+        case 'c':
+            result = cuda_matrix_identity(N);
+            break;
+        #endif
         default:
             if ((double)problem_size/omp_get_num_procs() >= 150/16.0) result = omp_matrix_identity(N);
             else result = seq_matrix_identity(N);
@@ -53,6 +59,11 @@ Matrix matrix_random(size_t rows, size_t cols, char flag) {
         case 's':
             result = seq_matrix_random(rows, cols);
             break;
+        #ifdef CUDA_SM_COUNT
+        case 'c':
+            result = cuda_matrix_random(rows, cols);
+            break;
+        #endif
         default:
             result = seq_matrix_random(rows, cols);
             break;
@@ -73,6 +84,11 @@ Matrix matrix_init_integers(size_t rows, size_t cols, char flag) {
         case 's':
             result = seq_matrix_init_integers(rows, cols);
             break;
+        #ifdef CUDA_SM_COUNT
+        case 'c':
+            result = cuda_matrix_init_integers(rows, cols);
+            break;
+        #endif
         default:
             if ((double)problem_size/omp_get_num_procs() >= 2500/16.0) result = omp_matrix_init_integers(rows, cols);
             else result = seq_matrix_init_integers(rows, cols);
