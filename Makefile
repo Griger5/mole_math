@@ -19,6 +19,14 @@ MATRIX = $(MAIN)/matrix
 MATRIX_SRCS := $(wildcard $(MATRIX)/*.c)
 MATRIX_OBJS := $(patsubst $(MATRIX)/%.c, $(BUILD)/%.o, $(MATRIX_SRCS))
 
+UTILS = $(MAIN)/utils
+UTILS_SRCS := $(wildcard $(UTILS)/*.c)
+UTILS_OBJS := $(patsubst $(UTILS)/%.c, $(BUILD)/%.o, $(UTILS_SRCS))
+
+STATS = $(MAIN)/stats
+STATS_SRCS := $(wildcard $(STATS)/*.c)
+STATS_OBJS := $(patsubst $(STATS)/%.c, $(BUILD)/%.o, $(STATS_SRCS))
+
 SEQ := ./src/sequential
 SEQ_SRCS := $(wildcard $(SEQ)/*.c)
 SEQ_OBJS := $(patsubst $(SEQ)/%.c, $(BUILD)/%.o, $(SEQ_SRCS))
@@ -37,7 +45,7 @@ CUDA_KERN_OBJS := $(patsubst $(CUDA_KERN)/%.cu, $(BUILD)/%.o, $(CUDA_KERN_SRCS))
 
 TEST := ./test
 
-OBJS = $(MATRIX_OBJS) $(SEQ_OBJS) $(OMP_OBJS)
+OBJS = $(MATRIX_OBJS) $(UTILS_OBJS) $(STATS_OBJS) $(SEQ_OBJS) $(OMP_OBJS) 
 
 ifneq ($(shell which nvcc),)
 TO_COMPILE += compile_cuda
@@ -50,6 +58,8 @@ all: $(LIB) $(BUILD) $(TO_COMPILE)
 
 compile_main:
 	$(MAKE) -C $(MATRIX)
+	$(MAKE) -C $(UTILS)
+	$(MAKE) -C $(STATS)
 
 compile_seq:
 	$(MAKE) -C $(SEQ)
