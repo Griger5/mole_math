@@ -1,11 +1,12 @@
 #include <string.h>
 #include <stdlib.h>
 
+#define PRIVATE_DATASET
 #include "../../../include/mole_math/stats_dataset_define.h"
 #include "../../../include/mole_math/file_operations.h"
 #include "../../../include/mole_math/matrix_utils.h"
 
-void create_datapoint_csv(char *data, DataSet *dataset, size_t index) {
+static void create_datapoint_csv(char *data, DataSet *dataset, size_t index) {
     char *token;
     size_t field_count = dataset->field_count;
 
@@ -16,6 +17,14 @@ void create_datapoint_csv(char *data, DataSet *dataset, size_t index) {
         token = strtok(NULL, ",");
         dataset->data.values[index][i] = atof(token);
     }
+}
+
+size_t stats_dataset_get_record_count(const DataSet dataset) {
+    return dataset.rec_count;
+}
+
+size_t stats_dataset_get_field_count(const DataSet dataset) {
+    return dataset.field_count;
 }
 
 DataSet stats_load_data_csv(const char *filename) {

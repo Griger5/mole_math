@@ -5,11 +5,17 @@
 #include <mole_math/matrix_define.h>
 
 typedef struct _DataSet {
-    size_t rec_count;
-    size_t field_count;
-    size_t label_count;
-    Matrix data;
+    struct { 
+        size_t rec_count;
+        size_t field_count;
+        size_t label_count;
+        Matrix data;
+    } PRIVATE_DATASET;
 } DataSet;
+
+size_t stats_dataset_get_record_count(const DataSet dataset);
+
+size_t stats_dataset_get_field_count(const DataSet dataset);
 
 DataSet stats_load_data_csv(const char *filename);
 
