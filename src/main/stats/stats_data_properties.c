@@ -47,3 +47,33 @@ Matrix stats_mean_diff_data_field(DataSet dataset, size_t field_num, char flag) 
 
     return result;
 }
+
+double stats_std_var_biased_1d(DataSet dataset, size_t field_num, char flag) {
+    double result;
+    
+    switch (flag) {
+        case 's':
+            result = seq_stats_std_var_biased_1d(dataset, field_num);
+            break;
+        default:
+            result = seq_stats_std_var_biased_1d(dataset, field_num);
+            break;
+    }
+
+    return result;
+}
+
+double stats_std_covar_popul(DataSet dataset, size_t field_1, size_t field_2, char flag) {
+    double result;
+    
+    switch (flag) {
+        case 's':
+            result = seq_stats_std_covar_popul(dataset, field_1, field_2);
+            break;
+        default:
+            result = seq_stats_std_covar_popul(dataset, field_1, field_2);
+            break;
+    }
+
+    return result;
+}
