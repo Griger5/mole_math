@@ -32,12 +32,14 @@ DataSet stats_load_data_csv(const char *filename) {
 
     size_t rec_count = count_records(csv_file);
     size_t field_count = count_fields(csv_file);
+    printf("%ld %ld", rec_count, field_count);
+    fflush(stdout);
 
     DataSet all_data;
     all_data.rec_count = rec_count;
     all_data.field_count = field_count;
     all_data.label_count = 0;
-    all_data.data = matrix_init(field_count, rec_count);
+    all_data.data = matrix_init(rec_count, field_count);
 
     char *current_record = NULL;
     size_t n = 0;
