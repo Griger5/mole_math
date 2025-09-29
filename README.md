@@ -1,5 +1,5 @@
 # mole_math
-![Static Badge](https://img.shields.io/badge/Linux-black?style=flat&logo=linux&labelColor=black&color=red)   ![Static Badge](https://img.shields.io/badge/C-black?style=flat&logo=C&labelColor=black&color=blue) ![Static Badge](https://img.shields.io/badge/OpenMP-black?style=flat&logo=C&labelColor=black&color=blue) ![Static Badge](https://img.shields.io/badge/CUnit-black?style=flat&logo=C&labelColor=black&color=blue) 
+![Static Badge](https://img.shields.io/badge/Linux-black?style=flat&logo=linux&labelColor=black&color=red)   ![Static Badge](https://img.shields.io/badge/C-black?style=flat&logo=C&labelColor=black&color=blue) ![Static Badge](https://img.shields.io/badge/OpenMP-black?style=flat&logo=C&labelColor=black&color=blue) ![Static Badge](https://img.shields.io/badge/CUnit-black?style=flat&logo=C&labelColor=black&color=blue) ![Static Badge](https://img.shields.io/badge/CUDA-76B900?logo=nvidia&logoColor=white)
 
 NOTE: *FULL DOCUMENTAION CAN BE FOUND* [HERE](https://talpasoft.com/mole_math).
 ## Contents:
@@ -9,12 +9,13 @@ NOTE: *FULL DOCUMENTAION CAN BE FOUND* [HERE](https://talpasoft.com/mole_math).
 4. [The basics](#the-basics)
 
 ## Overview
-**mole_math** is a lightweight, easy to use and easy to setup matrix-math library written entirely in C. It makes use of OpenMP for additional speed-up by parallelization. CUnit framework is used for unit-testing of all functions. The library was also manually tested with *valgrind* to avoid memory leaks. 
+**mole_math** is a lightweight, easy to use and easy to setup matrix-math library written entirely in C. It makes use of OpenMP and CUDA for additional speed-up by parallelization. CUnit framework is used for unit-testing of all functions. The library was also manually tested with *valgrind* to avoid memory leaks. 
 
 ## Requirements
 - [GCC](https://gcc.gnu.org/) compiler (with OpenMP)
 - [Make](https://www.gnu.org/software/make/)
 - [CUnit](https://cunit.sourceforge.net/)
+- [CUDA](https://developer.nvidia.com/cuda-toolkit) (optional)
 ## Installation
 First, clone the repository.
 ```sh
@@ -29,7 +30,7 @@ or
 ```
 sudo ./setup.sh install
 ```
-The script takes care of compiling all required files into a shared library with *Make*. It also as compiles the tests. **sudo** command is needed, because the script copies the headers and compiled library into */usr/local/include/* and */usr/local/lib/* directories respectively.
+The script takes care of compiling all required files into a shared library with *Make*. It also as compiles the tests. **sudo** command is needed, because the script copies the headers and compiled library into */usr/local/include/* and */usr/local/lib/* directories respectively. If `CUDA` isn't available, certain parts of the library simply won't compile - but the library will still work.
 <br>
 
 To run the tests, enter the *test* directory and execute *run_tests* script:
@@ -113,6 +114,7 @@ Most functions can be called with an additional parameter specifying if a sequen
 matrix_inverse(some_matrix);
 matrix_inverse(some_matrix, 's') // specify sequential version
 matrix_inverse(some_matrix, 'o') // specify openmp version
+matrix_inverse(some_matrix, 'c') // specify CUDA version
 ```
 If a function is called with no additional parameter, it will, somewhat heuristically, decide which version to use on its own, depending on the problem size and the number of CPU cores on the device it's running on.
 
